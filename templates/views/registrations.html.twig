@@ -1,0 +1,85 @@
+{% extends "base.html.twig" %}
+{% block view %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <canvas class="RegistrationChart chartjs-render-monitor" height="100px"></canvas>
+            <table class="table table-responsive-sm table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Email Adress</th>
+                    <th>Mobile Phone</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Balys Sruoga</td>
+                    <td>balys@sruoga.lt</td>
+                    <td>+37086870808</td>
+                    <td>2018/11/21</td>
+                    <td>
+                        <span class="badge badge-success">Succesfull</span>
+                    </td>
+                </tr><tr>
+                    <td>2</td>
+                    <td>Balys Sruoga</td>
+                    <td>balys@sruoga.lt</td>
+                    <td>+37086870808</td>
+                    <td>2018/11/22</td>
+                    <td>
+                        <span class="badge badge-warning">Pending</span>
+                    </td>
+                </tr><tr>
+                    <td>3</td>
+                    <td>Balys Sruoga</td>
+                    <td>balys@sruoga.lt</td>
+                    <td>+37086870808</td>
+                    <td>2018/11/23</td>
+                    <td>
+                        <span class="badge badge-danger">Canceled</span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col1"></div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        var random = function random() {
+            return Math.round(Math.random() * 100);
+        };
+
+        var lineChart = new Chart($('.RegistrationChart'), {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Succesfull',
+                    backgroundColor: 'rgba(75,181,67, 0.2)',
+                    borderColor: 'rgba(75,181,67, 1)',
+                    pointBackgroundColor: 'rgba(75,181,67, 1)',
+                    pointBorderColor: '#fff',
+                    data: [random(), random(), random(), random(), random(), random(), random()]
+                }, {
+                    label: 'Cancelled',
+                    backgroundColor: 'rgba(166,50,50, 0.2)',
+                    borderColor: 'rgba(166,50,50, 1)',
+                    pointBackgroundColor: 'rgba(166,50,50, 1)',
+                    pointBorderColor: '#fff',
+                    data: [random(), random(), random(), random(), random(), random(), random()]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+{% endblock %}
