@@ -16,35 +16,26 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Balys Sruoga</td>
-                    <td>balys@sruoga.lt</td>
-                    <td>+37086870808</td>
-                    <td>2018/11/21</td>
-                    <td>
-                        <span class="badge badge-success">Succesfull</span>
-                    </td>
-                </tr><tr>
-                    <td>2</td>
-                    <td>Balys Sruoga</td>
-                    <td>balys@sruoga.lt</td>
-                    <td>+37086870808</td>
-                    <td>2018/11/22</td>
-                    <td>
-                        <span class="badge badge-warning">Pending</span>
-                    </td>
-                </tr><tr>
-                    <td>3</td>
-                    <td>Balys Sruoga</td>
-                    <td>balys@sruoga.lt</td>
-                    <td>+37086870808</td>
-                    <td>2018/11/23</td>
-                    <td>
-                        <span class="badge badge-danger">Canceled</span>
-                    </td>
-                </tr>
-
+                {% for registration in registrations %}
+                    <tr>
+                        <td>{{ registration.getId() }}</td>
+                        <td>{{  registration.getName() }}</td>
+                        <td>{{  registration.getEmail() }}</td>
+                        <td>{{  registration.getMnumber() }}</td>
+                        <td>{{  registration.getDate() }}</td>
+                        <td>
+                            {% if  registration.getStatus()=="Successful"%}
+                            <span class="badge badge-success">{{  registration.getStatus() }}</span>
+                            {% endif %}
+                            {% if  registration.getStatus()=="Pending"%}
+                                <span class="badge badge-warning">{{  registration.getStatus() }}</span>
+                            {% endif %}
+                            {% if  registration.getStatus()=="Cancelled"%}
+                                <span class="badge badge-danger">{{  registration.getStatus() }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -52,34 +43,5 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script>
-        var random = function random() {
-            return Math.round(Math.random() * 100);
-        };
-
-        var lineChart = new Chart($('.RegistrationChart'), {
-            type: 'line',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                    label: 'Succesfull',
-                    backgroundColor: 'rgba(75,181,67, 0.2)',
-                    borderColor: 'rgba(75,181,67, 1)',
-                    pointBackgroundColor: 'rgba(75,181,67, 1)',
-                    pointBorderColor: '#fff',
-                    data: [random(), random(), random(), random(), random(), random(), random()]
-                }, {
-                    label: 'Cancelled',
-                    backgroundColor: 'rgba(166,50,50, 0.2)',
-                    borderColor: 'rgba(166,50,50, 1)',
-                    pointBackgroundColor: 'rgba(166,50,50, 1)',
-                    pointBorderColor: '#fff',
-                    data: [random(), random(), random(), random(), random(), random(), random()]
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    </script>
+    <script src="{{ asset('build/js/registrations.js') }}"></script>
 {% endblock %}
