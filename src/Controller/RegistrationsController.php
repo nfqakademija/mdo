@@ -12,7 +12,7 @@ class RegistrationsController extends Controller
         $regRepo = new RegistrationsRepository();
         return $this->render('views/registrations.html.twig', [
             'page_name' => 'Registrations',
-            'registrations' => $regRepo->getRegistrations()
+            'registrations' => $regRepo->getData()
         ]);
     }
 }

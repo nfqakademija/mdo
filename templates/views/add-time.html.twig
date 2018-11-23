@@ -1,50 +1,75 @@
 {% extends "base.html.twig" %}
 {% block view %}
-    <div class="Session row">
-        <div class="form-group col-md-3">
-            <label for="days">Day of the week</label>
-            <select class="form-control" id="days">
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
-                <option>Sunday</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="timepicker">From</label>
-            <input type="text" name="timepicker" class="timepicker form-control"/>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="timepicker">To</label>
-            <input type="timepicker" name="timepicker" class="timepicker form-control"/>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="price">Price</label>
-            <div class="input-group mb-3">
-                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
-                <div class="input-group-append">
-                    <span class="input-group-text">€</span>
+    <div class="Sessions row">
+        {% for session in sessions %}
+            <div class="Session col-lg-6 p-3">
+                <div class="inside card-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="days">Day of the week</label>
+                            <select class="form-control" id="days">
+                                <option {% if session.getDayOfTheWeek=="Monday" %} selected {% endif %}>Monday</option>
+                                <option {% if session.getDayOfTheWeek=="Tuesday" %} selected {% endif %}>Tuesday</option>
+                                <option {% if session.getDayOfTheWeek=="Wednesday" %} selected {% endif %}>Wednesday</option>
+                                <option {% if session.getDayOfTheWeek=="Thursday" %} selected {% endif %}>Thursday</option>
+                                <option {% if session.getDayOfTheWeek=="Friday" %} selected {% endif %}>Friday</option>
+                                <option {% if session.getDayOfTheWeek=="Saturday" %} selected {% endif %}>Saturday</option>
+                                <option {% if session.getDayOfTheWeek=="Sunday" %} selected {% endif %}>Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="days">Type</label>
+                            <select class="form-control" id="days">
+                                <option {% if session.getType=="Kids" %} selected {% endif %}>Kids</option>
+                                <option {% if session.getType=="Adults" %} selected {% endif %}>Adults</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="timepicker">From</label>
+                            <input type="text" name="timepicker" value="{{ session.getFrom }}" placeholder="12:00" class="form-control" data-timepicker="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="timepicker">To</label>
+                            <input type="text" name="timepicker" value="{{ session.getTo }}" placeholder="12:00" class="form-control" data-timepicker="" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="price">Price</label>
+                            <div class="input-group">
+                                <input type="number" value="{{ session.getPrice }}" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">€</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="timepicker"> ​</label>
+                            <input type="button" value="Remove" class="RemoveButton btn--gray form-control">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-    <div class="row">
+    <div class="row mt-4">
         <div class="form-group col-md-2">
             <input type="button" class="AddButton form-control btn-secondary" value="Add">
         </div>
         <div class="form-group col-md-7"></div>
     </div>
     <div class="row">
-        <div class="form-group col-md-7"></div>
+        <div class="form-group col-md-10"></div>
         <div class="form-group col-md-2">
             <input type="submit" class="form-control btn-secondary" value="Save">
         </div>
     </div>
-    </div>
 {% endblock %}
 {% block scripts %}
     <script src="{{ asset('build/js/times.js') }}"> </script>
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('build/css/add-time.css') }}">
 {% endblock %}
