@@ -9,9 +9,10 @@
 namespace App\Repositories;
 
 
-use App\Models\Registration;
 
-class RegistrationsRepository implements Repository
+use App\Models\Session;
+
+class SessionRepository implements Repository
 {
     public function getData(): array
     {
@@ -22,20 +23,21 @@ class RegistrationsRepository implements Repository
 
     }
 
+
     private function LoadData(){
         $result = [];
         $data = json_decode(
-            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'Db' . DIRECTORY_SEPARATOR . 'Data.json'),
+            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'Db' . DIRECTORY_SEPARATOR . 'Sessions.json'),
             true
         );
         foreach ($data as $item) {
-            $record = new Registration();
-            $record->setDate($item['Date']);
+            $record = new Session();
+            $record->setDayOfTheWeek($item['DayOfTheWeek']);
             $record->setId($item['id']);
-            $record->setName($item['FullName']);
-            $record->setEmail($item['Email']);
-            $record->setMnumber($item['MobilePhone']);
-            $record->setStatus($item['Status']);
+            $record->setFrom($item['From']);
+            $record->setTo($item['To']);
+            $record->setPrice($item['Price']);
+            $record->setType($item['Type']);
             $result[] = $record;
         }
         return $result;

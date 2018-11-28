@@ -1,0 +1,26 @@
+[
+  {
+    "id" : 1,
+    "DayOfTheWeek" : "Monday",
+    "Type": "Adults",
+    "From" : "17:00",
+    "To":"18:00",
+    "Price": 200
+  },
+  {
+    "id" : 2,
+    "DayOfTheWeek" : "Tuesday",
+    "Type": "Kids",
+    "From" : "12:00",
+    "To":"13:00",
+    "Price": 450
+  },
+  {
+    "id" : 3,
+    "DayOfTheWeek" : "Wednesday",
+    "Type": "Adults",
+    "From" : "9:00",
+    "To":"11:00",
+    "Price": 150
+  }
+]

@@ -21,6 +21,7 @@ Encore
     .addEntry('js/registrations','./assets/js/src/registrations.js')
     .addEntry('js/times','./assets/js/src/times.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
+    .addStyleEntry('css/add-time', './assets/css/src/add-time.css')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

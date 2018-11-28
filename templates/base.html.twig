@@ -7,6 +7,12 @@
         {% block canonical_meta %}{% endblock %}
     </head>
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <form id="login-form" class="modal">
+        First name:<br>
+        <input type="text" name="firstname"><br>
+        Last name:<br>
+        <input type="text" name="lastname">
+    </form>
         {% include 'partials/header.html.twig' %}
         <div class="app-body">
             {% include 'partials/sidebar.html.twig' %}
@@ -17,7 +23,6 @@
                 </div>
             </main>
         </div>
-        {% include 'partials/footer.html.twig' %}
         {% include 'partials/scripts.html.twig' %}
         {% block scripts %}{% endblock %}
     </body>
