@@ -10,9 +10,10 @@ $(()=>{
         $('.modal-title').html("Add time to " + DayOfTheWeek);
     });
     $('.Save').click(()=>{
-        $.post( "/time-slot-submit", { Type : $('.Type').val(), Time : $('.Time').val(),Price : $('.Price').val(),From : $('.From').val(),To : $('.To').val(),Day : $('.modal').attr('data-day')} )
+        $.post( "/time-slot-submit", { Type : $('.Type').val(), Time : $('.Time').val(),Price : $('.Price').val(), From : $('.From').val(),To : $('.To').val(),Day : $('.modal').attr('data-day')} )
             .done(()=>{
-                location.reload();
+                //location.reload();
+                console.log('gerai');
             });
 
     });

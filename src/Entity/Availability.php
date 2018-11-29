@@ -18,6 +18,7 @@ class Availability
 
     /**
      * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\WeekDays", mappedBy="id")
      */
     private $day_of_week;
 
