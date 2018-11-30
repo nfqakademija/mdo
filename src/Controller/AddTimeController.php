@@ -17,13 +17,6 @@ class AddTimeController extends AbstractController
     {
         $sessions = new SessionRepository();
         $availabilityRepo = $this->getDoctrine()->getRepository(Availability::class);
-
-        //$weekDayRepo = $this->getDoctrine()->getRepository(WeekDays::class);
-//        $data = $weekDayRepo->getId()->getStartTime();
-//
-//        echo '<pre>';
-//        print_r($data);
-
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
             'sessions'=> $sessions->getData(),

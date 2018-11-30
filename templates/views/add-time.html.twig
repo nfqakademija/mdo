@@ -1,6 +1,10 @@
 {% extends "base.html.twig" %}
 {% block view %}
     {% include 'partials/modal.html.twig' %}
+    {% for data in availability_data %}
+        {{ dump(data.getDayOfWeek()) }}
+    {% endfor %}
+
     <table class="table table-responsive-sm">
         <thead class="header">
         <tr>
@@ -8,7 +12,7 @@
             <th>Tuesday</th>
             <th>Wednesday</th>
             <th>Thursday</th>
-            <th>Friday</th>
+            <th>fFriday</th>
             <th>Saturday</th>
             <th>Sunday</th>
         </tr>
@@ -16,7 +20,25 @@
         <tbody>
         <tr>
             <td>
-                <button type="button" class="AddButton btn--gray form-control" data-day="Monday" data-toggle="modal" data-target="#exampleModalCenter">
+                <div class="TimeButton btn--adult mt-2">
+                    <div class="TimeButton_close"><i class="fas fa-times"></i></div>
+                    18:00 - 20:00<br>
+                    <div class="AddButton_price">120 €</div>
+                </div>
+                <div class="TimeButton btn--adult mt-2">
+                    18:00 - 20:00<br>
+                    <div class="AddButton_price">120 €</div>
+                </div>
+                <div class="TimeButton btn--adult mt-2">
+                    18:00 - 20:00<br>
+                    <div class="AddButton_price">120 €</div>
+                </div>
+                <div class="TimeButton btn--adult mt-2">
+                    18:00 - 20:00<br>
+                    <div class="AddButton_price">120 €</div>
+                </div>
+
+                <button type="button" class="AddButton btn--gray form-control mt-2" data-day="Monday" data-toggle="modal" data-target="#exampleModalCenter">
                     Add
                 </button>
             </td>
