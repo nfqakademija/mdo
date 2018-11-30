@@ -48,4 +48,14 @@ class ReservationRepository extends ServiceEntityRepository
     }
     */
 
+    //Pries rezervuodami slota patikriname ar sis tikrai neuzimtas
+    public function checkSlotNotBooked(){
+
+    }
+
+    //irasome duomenis is WP registracijos formos i DB
+    public function createReservation(){
+
+    }
+
 }

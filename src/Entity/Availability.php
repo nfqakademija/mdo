@@ -22,6 +22,7 @@ class Availability
      */
     private $day_of_week;
 
+
     /**
      * @ORM\Column(type="time")
      */
@@ -46,6 +47,7 @@ class Availability
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
+
 
     public function getId(): ?int
     {
@@ -123,4 +125,5 @@ class Availability
 
         return $this;
     }
+
 }

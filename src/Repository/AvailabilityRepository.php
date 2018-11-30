@@ -19,6 +19,7 @@ class AvailabilityRepository extends ServiceEntityRepository
         parent::__construct($registry, Availability::class);
     }
 
+
     // /**
     //  * @return Availability[] Returns an array of Availability objects
     //  */
@@ -47,4 +48,17 @@ class AvailabilityRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    //Gauname visus laisvus laikus pagal diena ir graziname i WP kalendoriu
+    public function findAllFreeSlot(string $day){
+
+    }
+
+    //Gauname visus laisvus laikus pagal data(2018-12-14)
+    public function findAllFreeSlotDate(){
+
+    }
+
+
 }

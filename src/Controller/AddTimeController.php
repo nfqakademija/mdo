@@ -18,11 +18,6 @@ class AddTimeController extends AbstractController
         $sessions = new SessionRepository();
         $availabilityRepo = $this->getDoctrine()->getRepository(Availability::class);
 
-        //$weekDayRepo = $this->getDoctrine()->getRepository(WeekDays::class);
-//        $data = $weekDayRepo->getId()->getStartTime();
-//
-//        echo '<pre>';
-//        print_r($data);
 
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
@@ -45,6 +40,9 @@ class AddTimeController extends AbstractController
 
         //find and set day ID
         $weekDay = $weekDayRepo->findDayId($request->get('Day'));
+        if (!$weekDay) {
+            throw new EntityNotFoundException('This day'.$weekDay.' does not exist!');
+        }
 
 
         $availability = new Availability();

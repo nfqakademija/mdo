@@ -22,17 +22,17 @@ class WeekDaysRepository extends ServiceEntityRepository
     // /**
     //  * @return WeekDays[] Returns an array of WeekDays objects
     //  */
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+//    public function findByExampleField($value)
+//    {
+//        return $this->createQueryBuilder('w')
+//            ->andWhere('w.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('w.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
 
 
@@ -44,5 +44,12 @@ class WeekDaysRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    //Manau reikia gauti visus suvestus slotus pagal diena, kad admin dali butu lengva juos atvaizduoti
+    public function findAllTimeSlot(string $day){
+        $day = 'Monday';
+        //padave monday gauname visus laikus pirmadienio laikus ir t.t.
+
     }
 }

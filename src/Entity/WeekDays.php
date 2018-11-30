@@ -13,7 +13,6 @@ class WeekDays
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Availability", inversedBy="day_of_week")
      */
     private $id;
 
@@ -26,6 +25,7 @@ class WeekDays
      * @ORM\Column(type="integer")
      */
     private $day_no;
+
 
     public function getId(): ?int
     {
@@ -55,4 +55,5 @@ class WeekDays
 
         return $this;
     }
+
 }
