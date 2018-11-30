@@ -27,3 +27,6 @@
 .TimeButton_close{
     font-size: 0.85rem;
 }
+.modal-header {
+border-bottom: none;
+}

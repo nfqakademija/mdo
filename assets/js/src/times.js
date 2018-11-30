@@ -1,4 +1,6 @@
 $(()=>{
+    let SelectedForDeletion = null;
+    console.log(SelectedForDeletion);
     createTimePicker();
     $('.AddButton').click((e)=>{
         const target = $(e.target);
@@ -16,5 +18,23 @@ $(()=>{
                 console.log('gerai');
             });
 
+    });
+    $('.DeleteButtonConfirmation').click(()=>{
+        $.post( "/time-slot-delete", { id :  SelectedForDeletion} )
+            .done(()=>{
+                //location.reload();
+                console.log('gerai');
+            });
+
+    });
+    $('#warningDelete').on('hide.bs.modal', function (e) {
+        SelectedForDeletion = null;
+        console.log(SelectedForDeletion);
+    });
+    $('.DeleteTheTime').click((e)=>{
+        const target = $(e.target);
+        const TimeButton = target.parents('.TimeButton');
+        SelectedForDeletion = TimeButton.attr("data-id");
+        console.log(SelectedForDeletion);
     });
 });

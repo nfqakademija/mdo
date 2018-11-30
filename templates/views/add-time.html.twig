@@ -1,8 +1,9 @@
 {% extends "base.html.twig" %}
 {% block view %}
     {% include 'partials/modal.html.twig' %}
+    {% include 'partials/removeTimeWarning.html.twig' %}
     {% for data in availability_data %}
-        {{ dump(data.getDayOfWeek()) }}
+        {#{{ dump(data.getDayOfWeek()) }}#}
     {% endfor %}
 
     <table class="table table-responsive-sm">
@@ -12,7 +13,7 @@
             <th>Tuesday</th>
             <th>Wednesday</th>
             <th>Thursday</th>
-            <th>fFriday</th>
+            <th>Friday</th>
             <th>Saturday</th>
             <th>Sunday</th>
         </tr>
@@ -20,20 +21,18 @@
         <tbody>
         <tr>
             <td>
-                <div class="TimeButton btn--adult mt-2">
-                    <div class="TimeButton_close"><i class="fas fa-times"></i></div>
+                <div class="TimeButton btn--adult mt-2" data-id="0">
+                    <div class="TimeButton_close"><i class="fas fa-times DeleteTheTime"  data-toggle="modal" data-target="#warningDelete"></i></div>
                     18:00 - 20:00<br>
                     <div class="AddButton_price">120 €</div>
                 </div>
-                <div class="TimeButton btn--adult mt-2">
+                <div class="TimeButton btn--kids mt-2" data-id="1">
+                    <div class="TimeButton_close"><i class="fas fa-times DeleteTheTime"  data-toggle="modal" data-target="#warningDelete"></i></div>
                     18:00 - 20:00<br>
                     <div class="AddButton_price">120 €</div>
                 </div>
-                <div class="TimeButton btn--adult mt-2">
-                    18:00 - 20:00<br>
-                    <div class="AddButton_price">120 €</div>
-                </div>
-                <div class="TimeButton btn--adult mt-2">
+                <div class="TimeButton btn--adult mt-2" data-id="2">
+                    <div class="TimeButton_close"><i class="fas fa-times DeleteTheTime"  data-toggle="modal" data-target="#warningDelete"></i></div>
                     18:00 - 20:00<br>
                     <div class="AddButton_price">120 €</div>
                 </div>
