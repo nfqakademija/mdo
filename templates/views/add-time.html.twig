@@ -1,65 +1,24 @@
 {% extends "base.html.twig" %}
+{% set availabilities = [{'year':2018,'month':10,'day':24,'type':"Adults",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':24,'type':"Kids",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':25,'type':"Adults",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':23,'type':"Kids",'from':'12:00','to':'13:00'}] %}
 {% block view %}
     {% include 'partials/modal.html.twig' %}
-    <table class="table table-responsive-sm">
-        <thead class="header">
-        <tr>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-            <th>Sunday</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-day="Monday" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-                {% for time in sessions['monday'] %}
-                    <li>{{ time.startsAt.date }}</li>
-                {% endfor %}
-            </td>
-
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-            <td>
-                <button type="button" class="AddButton btn--gray form-control" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div id="calendar"></div>
+    </div>
 {% endblock %}
 {% block scripts %}
-    <script src="{{ asset('build/js/times.js') }}" > </script>
+    <script>
+        const dates = [];
+        {% for time in availabilities %}
+            dates.push({
+                date: new Date({{ time.year }}, {{ time.month }}, {{ time.day }}),
+                type: "{{ time.type }}",
+                from: "{{ time.from }}",
+                to: "{{ time.to }}"
+            });
+        {% endfor %}
+    </script>
+    <script src="{{ asset('build/js/times.js') }}"> </script>
 {% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="{{ asset('build/css/add-time.css') }}">

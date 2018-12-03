@@ -4,3 +4,45 @@
 .inside{
     border:solid 1px #e9ecee;
 }
+.jqyc-change-year {
+    border:none;
+    background: #343940;
+}
+.jqyc-not-empty-td:hover {
+    cursor: pointer;
+    background-color: #e9ecee;
+    color: #000;
+    border-radius: .25rem;
+}
+.col-xs-3{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 25%;
+    float: left;
+}
+.adults{
+    box-shadow : rgb(44, 143, 201) 0px -4px 0px 0px inset;
+}
+.mixed{
+    box-shadow: rgb(44, 143, 201) 0px -2px 0px 0px inset, rgb(245, 187, 0) 0px -4px 0px 0px inset;
+}
+.kids{
+    box-shadow: rgb(245, 187, 0) 0px -4px 0px 0px inset;
+}
+.formTime{
+    background-color: #e9e9e9;
+    border:solid 20px #e9e9e9;
+    border-radius:.5rem;
+    margin:10px;
+    position: relative;
+}
+.closeButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 800;
+}
