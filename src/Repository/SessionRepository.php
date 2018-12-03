@@ -69,6 +69,7 @@ class SessionRepository extends ServiceEntityRepository
     public function checkSlotFree($date, $startTime, $endTime)
     {
         return $this->createQueryBuilder('s')
+            ->select('s.id')
             ->andWhere('s.status = :val')
             ->andWhere('s.reservedAt = :day')
             ->andWhere('s.startsAt = :start')

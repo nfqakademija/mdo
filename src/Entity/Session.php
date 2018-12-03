@@ -46,6 +46,11 @@ class Session
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="session")
+     */
+    private $customer;
+
 
     public function getId(): ?int
     {
@@ -122,5 +127,21 @@ class Session
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer): void
+    {
+        $this->customer = $customer;
     }
 }

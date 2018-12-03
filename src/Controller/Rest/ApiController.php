@@ -3,6 +3,7 @@
 namespace App\Controller\Rest;
 
 
+use App\Entity\Customer;
 use App\Entity\Session;
 use App\Repository\SessionRepository;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -45,13 +46,6 @@ class ApiController extends FOSRestController
     public function getFreeTimesByDate(string $date)
     {
 
-        //Reikia gauti laisvas vietas pagal data ir transforminti i apacioje esanti masyva
-//        $dateArr = [
-//            '0100-0140' =>  1,
-//            '0500-0600' =>  1,
-//            '0600-0650' =>  1,
-//        ];
-
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
 
         $freeSlotOfDayColl = $sessionRepo->findFreeTimeSlotByDate($date);
@@ -65,6 +59,13 @@ class ApiController extends FOSRestController
 
         return View::create($freeSlotOfDayArray, Response::HTTP_OK);
 
+        //Reikia gauti laisvas vietas pagal data ir transforminti i apacioje esanti masyva
+//        $dateArr = [
+//            '0100-0140' =>  1,
+//            '0500-0600' =>  1,
+//            '0600-0650' =>  1,
+//        ];
+
     }
 
     /**
@@ -72,6 +73,7 @@ class ApiController extends FOSRestController
      * @Rest\Post("/calendar")
      * @param Request $request
      * @return View
+     * @throws \Exception
      */
     public function postBookingData(Request $request){
 
@@ -80,10 +82,37 @@ class ApiController extends FOSRestController
 
         $times = explode("-", $request->get('timeslot'));
 
-        $startTime = strpos($times[0], ':', 2).':00';
-        $endTime =   strpos($times[1], ':', 2).':00';
+        $startTime = $this->stringInsert($times[0], ':', 2).':00';
+        $endTime   = $this->stringInsert($times[1], ':', 2).':00';
 
-        $slot = $sessionRepo->checkSlotFree($request->get('date'), $startTime, $endTime);
+        $customer = New Customer();
+        $customer->setFullName($request->get('guest_name').', '.$request->get('guest_surname'));
+        $customer->setPhone($request->get('guest_phone'));
+        $customer->setEmail($request->get('guest_email'));
+        $customer->setComment($request->get('guest_comment'));
+        $customer->setRegisteredAt(new \DateTime('NOW'));
+
+        //Get free slot id
+        $freeSlotId = $sessionRepo->checkSlotFree($request->get('date'), $startTime, $endTime);
+
+        //Find record by id for updating
+        $session = $sessionRepo->find($freeSlotId[0]['id']);
+
+
+        if (!$session) {
+            throw $this->createNotFoundException(
+                 'Pavelavai, laikas rezervuotas'
+            );
+        }
+
+        $session->setStatus('reserved');
+        $session->setCustomer($customer);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($customer);
+        $em->persist($session);
+        $em->flush();
+
 
         $message = ['Jusu rezervacija sekminga'];
 
@@ -105,15 +134,10 @@ class ApiController extends FOSRestController
 
     }
 
-
-    private function putSymbolInPlace(string $string = NULL, string $put = NULL, $position=false) :string
+    private function stringInsert(string $str, string $insertstr, int $pos) :string
     {
-        $d1=$d2=$i=false;
-        $d=array(strlen($string), strlen($put));
-        if($position > $d[0]) $position=$d[0];
-        for($i=$d[0]; $i >= $position; $i--) $string[$i+$d[1]]=$string[$i];
-        for($i=0; $i<$d[1]; $i++) $string[$position+$i]=$put[$i];
-        return $string;
+        $str = substr($str, 0, $pos) . $insertstr . substr($str, $pos);
+        return $str;
     }
 
     //Dar reikia prideti kazkokia Api autentifikacija, oAuth, JWT, o gal cia Symfony jau kazkas yra tam reikalui
