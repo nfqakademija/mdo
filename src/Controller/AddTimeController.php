@@ -40,25 +40,44 @@ class AddTimeController extends AbstractController
     public function create(Request $request){
 
         $em = $this->getDoctrine()->getManager();
-//        $weekDayRepo = $this->getDoctrine()->getRepository(WeekDays::class);
 
-        //find and set day ID
-//        $weekDay = $weekDayRepo->findDayId($request->get('Day'));
-//        if (!$weekDay) {
-//            throw new EntityNotFoundException('This day'.$weekDay.' does not exist!');
-//        }
+        $startDate = '2018-12-03'; // reikia kad is formos ateitu diena kada pradeti, galima ir automatiskai padaryt
+        //(tik nepamirsk, kad jei spaudi ant treciadienio tai ir turi gauti treciadienio data, ir praeja savaites dienos jau bus ateinancios savaites datom)
+        $repeatEndDate = '2018-12-31'; // reikia datos iki kada kartoti laika(tai cia imesk i forma ir bus gerai)
+
+        $step  = 1;
+        $unit  = 'W';
+        $repeatStart = new \DateTime($startDate);
+        $repeatEnd   = new \DateTime($repeatEndDate);
+        $interval = new \DateInterval("P{$step}{$unit}");
+        $period   = new \DatePeriod($repeatStart, $interval, $repeatEnd);
 
 
-        $session = new Session();
-        $session->setDay($request->get('Day'));
-        $session->setStartsAt(new \DateTime($request->get('From').':00'));
-        $session->setEndsAt(new \DateTime($request->get('To').':00' ));
-        $session->setReservedAt(new \DateTime());
-        $session->setType($request->get('Type'));
-        $em->persist($session);
-        $em->flush();
+        foreach ($period as $key => $date) {
+            $session = new Session();
+            $session->setDay($request->get('Day'));
+            $session->setStartsAt(new \DateTime($request->get('From').':00'));
+            $session->setEndsAt(new \DateTime($request->get('To').':00' ));
+            $session->setReservedAt(new \DateTime($date->format('Y-m-d')));
+            $session->setType($request->get('Type'));
+            $session->setStatus('free');
+            $em->persist($session);
+            $em->flush();
+        }
 
         return $this->json(array('status' => '200'));
 
+    }
+
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test() {
+        // Nereikalingas metodas
+        $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
+        echo '<pre>';
+        print_r($sessionRepo->checkSlotFree('2018-12-03', '15:00:00', '16:30:00'));
+        die();
     }
 }

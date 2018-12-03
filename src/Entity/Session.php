@@ -46,6 +46,7 @@ class Session
      */
     private $status;
 
+
     public function getId(): ?int
     {
         return $this->id;

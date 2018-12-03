@@ -19,10 +19,15 @@ class SessionRepository extends ServiceEntityRepository
         parent::__construct($registry, Session::class);
     }
 
-
+    /**
+     * @param $day
+     * @return mixed
+     * return times slot by date
+     */
     public function findByDayField($day)
     {
         return $this->createQueryBuilder('s')
+            ->select('s.startsAt')->distinct()
             ->andWhere('s.day = :val')
             ->setParameter('val', $day)
             ->getQuery()
@@ -31,15 +36,49 @@ class SessionRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Session
+    /**
+     * @param $day
+     * @return mixed
+     */
+    public function findFreeTimeSlotByDate($day)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.status = :val')
+            ->andWhere('s.reservedAt = :day')
+            ->setParameter('val', 'free')
+            ->setParameter('day', $day)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult()
+            ;
     }
-    */
+
+
+    /**
+     * @return mixed
+     */
+    public function init_calendar()
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.status = :val')
+            ->setParameter('val', 'free')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function checkSlotFree($date, $startTime, $endTime)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.status = :val')
+            ->andWhere('s.reservedAt = :day')
+            ->andWhere('s.startsAt = :start')
+            ->andWhere('s.endsAt = :end')
+            ->setParameter('val', 'free')
+            ->setParameter('day', $date)
+            ->setParameter('start', $startTime)
+            ->setParameter('end', $endTime)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
