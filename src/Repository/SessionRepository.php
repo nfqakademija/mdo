@@ -22,7 +22,6 @@ class SessionRepository extends ServiceEntityRepository
     /**
      * @param $day
      * @return mixed
-     * return times slot by date
      */
     public function findByDayField($day)
     {
@@ -78,6 +77,16 @@ class SessionRepository extends ServiceEntityRepository
             ->setParameter('day', $date)
             ->setParameter('start', $startTime)
             ->setParameter('end', $endTime)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findRegistrationList()
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.status = :val')
+            ->setParameter('val', 'reserved')
             ->getQuery()
             ->getResult()
             ;

@@ -37,7 +37,8 @@ class AddTimeController extends AbstractController
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -69,11 +70,61 @@ class AddTimeController extends AbstractController
 
     }
 
+    /**
+     * @Route("/time-slot-edit/{id}", name="submit-edit-slot", methods={"GET"})
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getEdit($id)
+    {
+        $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+
+        return $this->json(array($session));
+    }
+
+
+    /**
+     * @Route("/time-slot-edit/{id}", name="submit-edit-slot", methods={"POST"})
+     * @param $id
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function edit($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+
+        $session->setDay($request->get('Day'));
+        $session->setStartsAt(new \DateTime($request->get('From').':00'));
+        $session->setEndsAt(new \DateTime($request->get('To').':00' ));
+        $session->setReservedAt(new \DateTime($date->format('Y-m-d')));
+        $session->setType($request->get('Type'));
+
+        $em->persist($session);
+        $em->flush();
+
+    }
+
+
+    /**
+     * @Route("/time-slot-delete/{id}", name="submit-delete-slot", methods={"POST"})
+     * @param $id
+     */
+    public function delete($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+
+        $em->remove($session);
+        $em->flush();
+    }
+
 
     /**
      * @Route("/test", name="test")
      */
-    public function test() {
+    public function test()
+    {
         // Nereikalingas metodas
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
         echo '<pre>';

@@ -18,22 +18,27 @@
                 <tbody>
                 {% for registration in registrations %}
                     <tr>
-                        <td>{{ registration.getId() }}</td>
-                        <td>{{  registration.getName() }}</td>
-                        <td>{{  registration.getEmail() }}</td>
-                        <td>{{  registration.getMnumber() }}</td>
-                        <td>{{  registration.getDate() }}</td>
-                        <td>
-                            {% if  registration.getStatus()=="Successful"%}
-                            <span class="badge badge-success">{{  registration.getStatus() }}</span>
-                            {% endif %}
-                            {% if  registration.getStatus()=="Pending"%}
-                                <span class="badge badge-warning">{{  registration.getStatus() }}</span>
-                            {% endif %}
-                            {% if  registration.getStatus()=="Cancelled"%}
-                                <span class="badge badge-danger">{{  registration.getStatus() }}</span>
-                            {% endif %}
-                        </td>
+                        <td>{{ registration.getCustomer().getId() }}</td>
+                        <td>{{ registration.getCustomer().getFullName() }}</td>
+                        <td>{{ registration.getCustomer().getEmail() }}</td>
+                        <td>{{ registration.getCustomer().getPhone() }}</td>
+                        <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
+                        <td>{{ registration.getStatus() }}</td>
+                        {#<td>{{  registration.getName() }}</td>#}
+                        {#<td>{{  registration.getEmail() }}</td>#}
+                        {#<td>{{  registration.getMnumber() }}</td>#}
+                        {#<td>{{  registration.getDate() }}</td>#}
+                        {#<td>#}
+                            {#{% if  registration.getStatus()=="Successful"%}#}
+                            {#<span class="badge badge-success">{{  registration.getStatus() }}</span>#}
+                            {#{% endif %}#}
+                            {#{% if  registration.getStatus()=="Pending"%}#}
+                                {#<span class="badge badge-warning">{{  registration.getStatus() }}</span>#}
+                            {#{% endif %}#}
+                            {#{% if  registration.getStatus()=="Cancelled"%}#}
+                                {#<span class="badge badge-danger">{{  registration.getStatus() }}</span>#}
+                            {#{% endif %}#}
+                        {#</td>#}
                     </tr>
                 {% endfor %}
                 </tbody>
