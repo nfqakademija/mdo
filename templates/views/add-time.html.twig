@@ -11,10 +11,12 @@
         const dates = [];
         {% for time in availabilities %}
             dates.push({
-                date: new Date({{ time.year }}, {{ time.month }}, {{ time.day }}),
+                date: new Date({{ time.year }}, {{ time.month-1 }}, {{ time.day }}),
                 type: "{{ time.type }}",
                 from: "{{ time.from }}",
-                to: "{{ time.to }}"
+                to: "{{ time.to }}",
+                repeatFor: 1,
+                old: true
             });
         {% endfor %}
     </script>

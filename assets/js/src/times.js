@@ -1,64 +1,107 @@
+import {getOldForm,getNewForm} from './timeForms.js';
 $(()=>{
 
-    const AddTime = ( type, from, to)=>{
-        let Kids='',Adults='';
-        console.log(type);
-        if(type == 'Kids')
-        {
-            Kids = 'selected'
-        }
-        if(type == 'Adults')
-        {
-            Adults = 'selected'
-        }
-        const formTime = '<form class="formTime mb-4">\n' +'<div class="closeButton"><i class="fas fa-times"></i></div>'+
-            '                    <div class="form-group col-md-12">\n' +
-            '                        <label for="days">Type</label>\n' +
-            '                        <select class="form-control Type">\n' +
-            '                            <option ' + Kids + '>Kids</option>\n' +
-            '                            <option ' + Adults + '>Adults</option>\n' +
-            '                        </select>\n' +
-            '                    </div>\n' +
-            '                    <div class="form-group col-md-12">\n' +
-            '                        <label for="timepicker">From</label>\n' +
-            '                        <input type="text" name="timepicker" value="' + from + '" placeholder="12:00" class="form-control From" data-timepicker="" autocomplete="off">\n' +
-            '                    </div>\n' +
-            '                    <div class="form-group col-md-12">\n' +
-            '                        <label for="timepicker">To</label>\n' +
-            '                        <input type="text" name="timepicker" value="' + to + '" placeholder="12:00" class="form-control To" data-timepicker="" autocomplete="off">\n' +
-            '                    </div>\n' +
-            '                    <div class="form-group col-md-12">\n' +
-            '                    <div class="input-group mb-3">\n' +
-            '                        <div class="input-group-prepend">\n' +
-            '                            <div class="input-group-text">\n' +
-            '                                <input class="repeatEveryCheckbox" type="checkbox" aria-label="Checkbox for following text input">\n' +
-            '                                <span class="" id="">&nbsp;&nbsp; repeat every </span>\n' +
-            '                            </div>\n' +
-            '                        </div>\n' +
-            '                        <input type="number" class="repeatEveryInput form-control" aria-label="Text input with checkbox">\n' +
-            '                    </div>\n' +
-            '                    </div>\n' +
-            '                </form>';
-        $('.times').append(formTime);
+    const months    = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    let currentDate = [];
+
+    const UpdateEvents = (target) => {
+        const id = $( ".formTime" ).index( $(target) );
+        console.log('id - ' + id);
+        const type = $(target).find('.Type').val();
+        const from = $(target).find('.From').val();
+        const to = $(target).find('.To').val();
+        const ticked = $(target).find('.repeatEveryCheckbox').prop( "checked" );
+        const repeatFor = (ticked) ? $(target).find('.repeatEveryInput').val() : 1;
+        (type === 'Kids') ?$(target).removeClass('timeAdults').addClass('timeKids') :$(target).removeClass('timeKids').addClass('timeAdults');
+        const timeObj = {
+            color: "#F5BB00",
+            date: currentDate,
+            from: from,
+            repeatFor: repeatFor,
+            to: to,
+            type: type,
+            old: false
+        };
+        $('#calendar').data('calendar').updateEvents(currentDate,timeObj,id);
+    };
+    const AddEvent = (target) => {
+        const id = $( ".formTime" ).index( $(target) );
+        console.log('id - ' + id);
+        const type = $(target).find('.Type').val();
+        const from = $(target).find('.From').val();
+        const to = $(target).find('.To').val();
+        const ticked = $(target).find('.repeatEveryCheckbox').prop( "checked" );
+        const repeatFor = (ticked) ? $(target).find('.repeatEveryInput').val() : 1;
+        (type === 'Kids') ?$(target).removeClass('timeAdults').addClass('timeKids') :$(target).removeClass('timeKids').addClass('timeAdults');
+        const timeObj = {
+            color: "#F5BB00",
+            date: currentDate,
+            from: from,
+            repeatFor: repeatFor,
+            to: to,
+            type: type
+        };
+        $('#calendar').data('calendar').addEvents(timeObj);
+    };
+    const AddNewTime = ()=>{
+        let form = $(getNewForm());
+        $('.times').append(form)
+        console.log(form);
+        createTimePicker();
+        AddEvent(form);
+
+        $('.closeButton').click((e)=>{
+            console.log( $(e.target));
+            $(e.target).parents('.formTime').remove();
+        });
+
+        $('.formTime').change((e)=>{
+            const target = e.currentTarget;
+            UpdateEvents(target);
+        });
+    };
+    const AddOldTime = (type,from,to)=>{
+
+        $('.times').append(getOldForm(type,from,to));
+
         createTimePicker();
 
+        $('.closeButton').click((e)=>{
+            $(e.target).parents('.formTime').remove(); //TODO: Add warning message
+        });
+
+        $('.formTime').change((e)=>{
+            const target = e.currentTarget;
+            UpdateEvents(target);
+        });
     };
-    createTimePicker();
+
     $('#calendar').calendar({
-        dataSource: dates
+        dataSource: dates,
     });
-    $('#calendar').clickDay(function(e){
-        const clickedDate = e.date.getDay();
-        //const isRegistered = ($(e.element).hasClass('adults') || $(e.element).hasClass('kids') || $(e.element).hasClass('mixed')) ;
+
+    $('#calendar').clickDay((e)=>{
+        let clickedDay = months[e.date.getMonth() ]+ " " + e.date.getDate();
+        $('.modal-title').html('Add time to ' + clickedDay);
         $('.formTime').remove();
-        e.events.map((el)=>{
+        currentDate = e.date;
+
+        e.events.map((el,index)=>{
             console.log(el);
-            AddTime(el.type,el.from,el.to);
+           AddOldTime(el.type,el.from,el.to);
         });
         $('#modalNew').modal('show');
     });
 
     $('.addButton').click(()=>{
-        AddTime( 'Kids','','');
+        AddNewTime();
+    });
+
+    $('.Save').click(()=>{
+        const newTimesArray = [];
+        $('#calendar').data('calendar').getEvents(currentDate).map((el)=>{
+            if(!el.old)newTimesArray.push(el);
+        });
+        console.log(newTimesArray);
     });
 });

@@ -792,6 +792,21 @@
 			
 			return events;
 		},
+        updateEvents: function(date,event,id) {
+            let index = 0;
+			let found = false;
+            if(this.options.dataSource && date) {
+                for(var i in this.options.dataSource) {
+                    if(this.options.dataSource[i].date <= date && this.options.dataSource[i].date >= date) {
+                        if(id == index) {this.options.dataSource[i] = event;found = true}
+                        index++;
+                    }
+                }
+            }
+        },
+        addEvents: function(event) {
+			this.options.dataSource.push(event);
+        },
 		getYear: function() {
 			return this.options.startYear;
 		},
