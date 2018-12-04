@@ -19,6 +19,9 @@
                 <button type="button" class="AddButton btn--gray form-control" data-day="Monday" data-toggle="modal" data-target="#exampleModalCenter">
                     Add
                 </button>
+                {% for time in sessions['monday'] %}
+                    <li>{{ time.startsAt.date }}</li>
+                {% endfor %}
             </td>
 
             <td>
