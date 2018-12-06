@@ -98,10 +98,15 @@ $(()=>{
     });
 
     $('.Save').click(()=>{
-        const newTimesArray = [];
+        let newTimesArray = [];
         $('#calendar').data('calendar').getEvents(currentDate).map((el)=>{
             if(!el.old)newTimesArray.push(el);
         });
+        newTimesArray = newTimesArray.map((el)=>{
+            el.date = el.date.getFullYear()+"-"+ (el.date.getMonth())+"-"+el.date.getDate();
+            return el;
+        });
+        $.post( "/time-slot-submit", newTimesArray[0] );
         console.log(newTimesArray);
     });
 });

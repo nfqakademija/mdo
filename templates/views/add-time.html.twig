@@ -1,5 +1,4 @@
 {% extends "base.html.twig" %}
-{% set availabilities = [{'year':2018,'month':10,'day':24,'type':"Adults",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':24,'type':"Kids",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':25,'type':"Adults",'from':'12:00','to':'13:00'},{'year':2018,'month':10,'day':23,'type':"Kids",'from':'12:00','to':'13:00'}] %}
 {% block view %}
     {% include 'partials/modal.html.twig' %}
     <div class="container">
@@ -9,12 +8,12 @@
 {% block scripts %}
     <script>
         const dates = [];
-        {% for time in availabilities %}
+        {% for time in sessions %}
             dates.push({
-                date: new Date({{ time.year }}, {{ time.month-1 }}, {{ time.day }}),
-                type: "{{ time.type }}",
-                from: "{{ time.from }}",
-                to: "{{ time.to }}",
+                date: new Date({{ time.getReservedAt().format('Y') }}, {{ time.getReservedAt().format('m') }}, {{ time.getReservedAt().format('d') }}),
+                type: "{{ time.getType() }}",
+                from: "{{ time.getStartsAt().format('H:ii') }}",
+                to: "{{ time.getEndsAt().format('H:ii') }}",
                 repeatFor: 1,
                 old: true
             });
