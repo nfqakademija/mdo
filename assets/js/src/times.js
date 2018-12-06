@@ -106,7 +106,7 @@ $(()=>{
             el.date = el.date.getFullYear()+"-"+ (el.date.getMonth())+"-"+el.date.getDate();
             return el;
         });
-        $.post( "/time-slot-submit", newTimesArray[0] );
+        $.post( "/time-slot-submit", newTimesArray );
         console.log(newTimesArray);
     });
 });

@@ -44,16 +44,32 @@
 .timeAdults{
     background-color: rgba(44, 143, 201,0.5);
 }
-.closeButton{
+.topButtons{
     pointer-events: all;
     position: absolute;
     top: 0;
-    right: 0;
     opacity: 0.5;
     cursor: pointer;
     z-index: 800;
+    right: 0;
+}
+.bottomButtons{
+    pointer-events: all;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    z-index: 800;
+    right: 0;
+}
+.closeButton{
+    display: inline-block;
 }
 .disabledForm{
     filter: grayscale(60%) brightness(0.6);
     pointer-events: none;
+}
+.modifyButton{
+    display: inline-block;
+    font-size: 0.8rem;
+    filter:none;
 }
