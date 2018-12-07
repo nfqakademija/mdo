@@ -22,6 +22,7 @@ $(()=>{
         });
         currentDate = e.date;
         $('#modalNew').modal('show');
+        $('.modal-title').html(months[e.date.getMonth()] + " " + e.date.getDate() + " times. ");
     });
     $('.addButton').click(()=>{
         const newTime = new NewTime(currentDate);
