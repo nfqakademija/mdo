@@ -60,7 +60,6 @@
     z-index: 9999999999;
     right: 0;
     color: white;
-    font-weight: bold;
 }
 .closeButton{
     display: inline-block;

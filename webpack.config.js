@@ -19,7 +19,7 @@ Encore
      */
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/registrations','./assets/js/src/registrations.js')
-    .addEntry('js/times','./assets/js/src/times.js')
+    .addEntry('js/times','./assets/js/src/times-page.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .addStyleEntry('css/add-time', './assets/css/src/add-time.css')
     //.addEntry('page1', './assets/js/page1.js')
