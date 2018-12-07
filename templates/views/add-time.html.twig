@@ -2,6 +2,7 @@
 {% set data = [{'reservedAt':{'Y':2018,'m':10,'d':18},'from':'12:00','to':'13:00','type':'Adults','hash':"gfsg525g4","id":0},{'reservedAt':{'Y':2018,'m':9,'d':12},'from':'13:00','to':'15:00','type':'Kids','hash':"gfsg525g4","id":1},{'reservedAt':{'Y':2018,'m':11,'d':25},'from':'16:00','to':'17:00','type':'Kids','hash':"gfsg525g4","id":2}] %}
 {% block view %}
     {% include "partials/modal.html.twig" %}
+    {% include "partials/modalWarning.html.twig" %}
     <div class="container">
         <div id="calendar"></div>
     </div>

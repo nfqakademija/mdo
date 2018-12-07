@@ -4,14 +4,8 @@ class OldTime extends Time{
         super(type, from, to, date);
         this._id = id;
         this._asHash = asHash;
+        this._applyForAll = false;
         this._enabled = enabled;
-        this._date = date;
-    }
-    get date() {
-        return this._date;
-    }
-    set date(value) {
-        this._date = value;
     }
 
     get id() {
@@ -105,6 +99,27 @@ class OldTime extends Time{
             if(this.enabled){ super.target.find('.DisableOverlay').hide();super.target.find('.bottomButtons').css('color','black') }
             if(!this.enabled){ super.target.find('.DisableOverlay').show();super.target.find('.bottomButtons').css('color','white') }
         });
+    }
+
+    UpdateTheValues() {
+        super.UpdateTheValues();
+        this._applyForAll = $('.ApplyForAll').find('input').prop('checked');
+    }
+
+    getSaveObj() {
+        return Object.assign(super.getSaveObj(), {id:this._id,hash:this._asHash,applyForAll:this._applyForAll});
+    }
+    CloseAction(){
+        $('#modalWarning').modal('show');
+        $('#modalNew').hide();
+        $('.confirmButton').click(()=>{
+            $.post( "/delete-time", { id:this.id } ).done(()=>{
+                super.CloseAction();
+            });
+        });
+        $('#modalWarning').on('hidden.bs.modal', function () {
+            $('#modalNew').show();
+        })
     }
 }
 export {OldTime};

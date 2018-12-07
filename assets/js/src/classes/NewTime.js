@@ -1,17 +1,10 @@
 import {Time} from './Time.js';
+import {getSessions,setSessions} from "../times-page";
+
 class NewTime extends Time{
     constructor(date,type = "Adults", from = "", to = "",repeatFor = 1) {
         super(type, from, to, date);
         this._repeatFor = repeatFor;
-        this._date = date;
-    }
-
-    get date() {
-        return this._date;
-    }
-
-    set date(value) {
-        this._date = value;
     }
 
     get repeatFor() {
@@ -70,6 +63,10 @@ class NewTime extends Time{
         super.UpdateTheValues();
         const ticked = $(super.target).find('.repeatEveryCheckbox').prop( "checked" );
         this.repeatFor = (ticked) ? $(super.target).find('.repeatEveryInput').val() : 1;
+    }
+
+    getSaveObj() {
+        return Object.assign(super.getSaveObj(), {repeatFor:this._repeatFor});
     }
 }
 export {NewTime};

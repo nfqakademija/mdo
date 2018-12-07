@@ -1,3 +1,5 @@
+import {getSessions, setSessions} from "../times-page";
+
 class Time {
     constructor(type, from, to, date) {
         this._date = date;
@@ -50,11 +52,28 @@ class Time {
         throw new Error('You have to implement the method getForm!');
     }
 
+    CloseAction(){
+        this.target.remove();
+        setSessions(getSessions().map(session => session.target!==this.target));
+    }
+
+    getSaveObj(){
+        return {
+            date: this._date.getFullYear() + "-" + this._date.getMonth() + "-" + this._date.getDate(),
+            type: this._type,
+            to: this._to,
+            from: this._from
+        }
+    }
+
     UpdateTheValues(){
         this.type = $(this.target).find('.Type').val();
         this.from = $(this.target).find('.From').val();
         this.to = $(this.target).find('.To').val();
         (this.type === 'Kids') ?$(this.target).removeClass('timeAdults').addClass('timeKids') :$(this.target).removeClass('timeKids').addClass('timeAdults');
+        this.target.find('.closeButton').click(()=>{
+            this.CloseAction();
+        });
     }
 
     addTime() {
