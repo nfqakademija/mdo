@@ -2,7 +2,6 @@
 
 namespace App\Controller\Rest;
 
-
 use App\Entity\Customer;
 use App\Entity\Session;
 use App\Repository\SessionRepository;
@@ -59,13 +58,6 @@ class ApiController extends FOSRestController
 
         return View::create($freeSlotOfDayArray, Response::HTTP_OK);
 
-        //Reikia gauti laisvas vietas pagal data ir transforminti i apacioje esanti masyva
-//        $dateArr = [
-//            '0100-0140' =>  1,
-//            '0500-0600' =>  1,
-//            '0600-0650' =>  1,
-//        ];
-
     }
 
     /**
@@ -119,18 +111,6 @@ class ApiController extends FOSRestController
 
         return View::create($message, Response::HTTP_OK);
 
-        //Duomenys kurie ateina is WP kai submitini registarijos forma. Atrodo taip:
-//        [
-//            'date' => '2018-12-17',
-//            'timestamp' => '1544763600',
-//            'timeslot' => '0500-0600',
-//            'calendar_id' => 0, // jeigu bus du kalendoriai vaiku ir suaugusiuju
-//            'guest_name' => 'vardas',
-//            'guest_surname' => 'pavarde',
-//            'guest_phone' => '865289804', //skambinam situ numeriu jeigu kazkas neaisku :D
-//            'guest_email' => 'mail@mail.com',
-//            'guest_comment' => 'komentaras'
-//        ];
 
     }
 
@@ -140,7 +120,5 @@ class ApiController extends FOSRestController
         return $str;
     }
 
-    //Dar reikia prideti kazkokia Api autentifikacija, oAuth, JWT, o gal cia Symfony jau kazkas yra tam reikalui
-    //PS. Bandziau kreiptis i api per Postman tai kaip ir veikia
 
 }

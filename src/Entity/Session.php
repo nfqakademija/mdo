@@ -17,11 +17,6 @@ class Session
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $day;
-
-    /**
      * @ORM\Column(type="time")
      */
     private $startsAt;
@@ -62,17 +57,6 @@ class Session
         return $this->id;
     }
 
-    public function getDay(): ?string
-    {
-        return $this->day;
-    }
-
-    public function setDay(string $day): self
-    {
-        $this->day = $day;
-
-        return $this;
-    }
 
     public function getStartsAt(): ?\DateTimeInterface
     {

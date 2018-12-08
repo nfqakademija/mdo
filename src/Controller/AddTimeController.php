@@ -14,19 +14,9 @@ class AddTimeController extends AbstractController
     {
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
 
-        //print_r($sessionRepo->findByDayField('Monday'));die();
-
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
-            'sessions'=> [
-                'monday' => $sessionRepo->findByDayField('Monday'),
-                'tuesday' => $sessionRepo->findByDayField('Tuesday'),
-                'wednesday' => $sessionRepo->findByDayField('Wednesday'),
-                'thursday' => $sessionRepo->findByDayField('Thursday'),
-                'friday' => $sessionRepo->findByDayField('Friday'),
-                'saturday' => $sessionRepo->findByDayField('Saturday'),
-                'sunday' => $sessionRepo->findByDayField('Sunday')
-                ]
+            'sessions'=> $sessionRepo->findAll()
         ]);
     }
 
@@ -42,9 +32,8 @@ class AddTimeController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $startDate = '2018-12-03'; // reikia kad is formos ateitu diena kada pradeti, galima ir automatiskai padaryt
-        //(tik nepamirsk, kad jei spaudi ant treciadienio tai ir turi gauti treciadienio data, ir praeja savaites dienos jau bus ateinancios savaites datom)
-        $repeatEndDate = '2018-12-31'; // reikia datos iki kada kartoti laika(tai cia imesk i forma ir bus gerai)
+        $startDate = new \DateTime('Y-m-d');
+        $repeatEndDate = $startDate->modify("+$request->get('repeatFor') week"); //'2018-12-31';repeatFor
 
         $step  = 1;
         $unit  = 'W';
