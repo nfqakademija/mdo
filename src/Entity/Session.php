@@ -46,6 +46,16 @@ class Session
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="session")
+     */
+    private $customer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discount", inversedBy="session")
+     */
+    private $discount;
+
 
     public function getId(): ?int
     {
@@ -122,5 +132,37 @@ class Session
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param mixed $discount
+     */
+    public function setDiscount($discount): void
+    {
+        $this->discount = $discount;
     }
 }

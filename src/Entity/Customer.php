@@ -41,6 +41,11 @@ class Customer
      */
     private $registeredAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Session", mappedBy="customer")
+     */
+    private $session;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,5 +109,21 @@ class Customer
         $this->registeredAt = $registeredAt;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param mixed $session
+     */
+    public function setSession($session): void
+    {
+        $this->session = $session;
     }
 }
