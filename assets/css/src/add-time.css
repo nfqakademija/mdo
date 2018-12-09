@@ -4,3 +4,83 @@
 .inside{
     border:solid 1px #e9ecee;
 }
+.jqyc-change-year {
+    border:none;
+    background: #343940;
+}
+.jqyc-not-empty-td:hover {
+    cursor: pointer;
+    background-color: #e9ecee;
+    color: #000;
+    border-radius: .25rem;
+}
+.col-xs-3{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 25%;
+    float: left;
+}
+.adults{
+    box-shadow : rgb(44, 143, 201) 0px -4px 0px 0px inset;
+}
+.mixed{
+    box-shadow: rgb(44, 143, 201) 0px -2px 0px 0px inset, rgb(245, 187, 0) 0px -4px 0px 0px inset;
+}
+.kids{
+    box-shadow: rgb(245, 187, 0) 0px -4px 0px 0px inset;
+}
+.formTime{
+    border-radius:.5rem;
+    margin:10px;
+    position: relative;
+    border:solid 20px transparent;
+
+}
+.timeKids{
+    background-color: rgba(245, 187, 0,0.5);
+}
+.timeAdults{
+    background-color: rgba(44, 143, 201,0.5);
+}
+.topButtons{
+    pointer-events: all;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    z-index: 10;
+    right: 0;
+}
+.bottomButtons{
+    pointer-events: all;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    z-index: 9999999999;
+    right: 0;
+    color: white;
+}
+.closeButton{
+    display: inline-block;
+    color: dimgrey;
+}
+.modifyButton{
+    display: inline-block;
+    font-size: 0.8rem;
+    filter:none;
+}
+.DisableOverlay{
+    top: -20px;
+    position: absolute;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999999999;
+    border: solid 20px transparent;
+    border-radius: .5rem;
+}
+.ApplyForAll{
+
+}
