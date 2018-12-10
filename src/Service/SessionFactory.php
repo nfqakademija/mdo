@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ovidijus
- * Date: 18.12.7
- * Time: 12.10
- */
 
 namespace App\Service;
-
 
 class SessionFactory
 {
@@ -35,5 +28,4 @@ class SessionFactory
 
         return $period;
     }
-
 }
