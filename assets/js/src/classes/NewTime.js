@@ -5,6 +5,7 @@ class NewTime extends Time{
     constructor(date,type = "Adults", from = "", to = "",repeatFor = 1) {
         super(type, from, to, date);
         this._repeatFor = repeatFor;
+        super.target = this.getForm();
     }
 
     get repeatFor() {

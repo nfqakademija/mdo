@@ -6,7 +6,7 @@ class Time {
         this._type = type;
         this._from = from;
         this._to = to;
-        this._target = this.getForm();
+        this._target = null;
     }
     get target() {
         return this._target;

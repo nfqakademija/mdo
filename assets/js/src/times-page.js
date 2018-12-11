@@ -26,6 +26,7 @@ $(()=>{
     $('#calendar').clickDay((e)=>{
         currentTimes = Time.findTime(sessions,e.date);
         currentTimes.map((time)=>{
+            console.log(time);
             time.addTime();
         });
         currentDate = e.date;
@@ -41,10 +42,11 @@ $(()=>{
     $('.Save').click(()=>{
         const editedSessions = currentTimes.filter(session=> session instanceof NewTime || session.enabled);
         const readyForSubmitSessions = editedSessions.map(session => session.getSaveObj());
+        const jsonSessions = JSON.stringify(readyForSubmitSessions);
         $.ajax({
             type: 'POST',
             url: "/time-slot-submit",
-            data: {'Sessions[]' : readyForSubmitSessions},
+            data: jsonSessions,
             success:()=>{
                 location.reload();
             },
