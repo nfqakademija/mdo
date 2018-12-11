@@ -58,7 +58,16 @@ $(()=>{
         currentTimes = [];
         $('.times').html('');
     });
+    $('.repeatEveryCheckboxForAll').change(()=>{
+        $('.repeatEveryCheckbox').prop('checked',$('.repeatEveryCheckboxForAll').prop('checked'));
+        $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
+        currentTimes.map(time=>time.UpdateTheValues());
+    });
 
+    $('.repeatEveryInputForAll').change(()=>{
+       $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
+        currentTimes.map(time=>time.UpdateTheValues());
+    });
 });
 
 export {getSessions,setSessions};
