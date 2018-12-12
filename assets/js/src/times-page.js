@@ -42,11 +42,11 @@ $(()=>{
 
     $('.Save').click(()=>{
         const editedSessions = currentTimes.filter(session=> session instanceof NewTime || session.enabled);
-        const readyForSubmitSessions = editedSessions.map(session => session.getSaveObj());
+        const readyForSubmitSessions =editedSessions.map(session => session.getSaveObj());
         const jsonSessions = JSON.stringify(readyForSubmitSessions);
         $.ajax({
             type: 'POST',
-            url: "/time-slot-submit",
+            url: "/sessions",
             data: jsonSessions,
             success:()=>{
                 location.reload();

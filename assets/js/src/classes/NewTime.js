@@ -1,5 +1,4 @@
 import {Time} from './Time.js';
-import {getSessions,setSessions} from "../times-page";
 class NewTime extends Time{
     constructor(date,type = "Adults", from = "", to = "",repeatFor = 1) {
         super(type, from, to, date);
@@ -59,11 +58,12 @@ class NewTime extends Time{
     }
 
     UpdateTheValues() {
+        super.UpdateTheValues();
         this.repeatFor = $(super.target).find('.repeatEveryInput').val();
     }
 
     getSaveObj() {
-        return Object.assign(super.getSaveObj(), {repeatFor:this._repeatFor});
+        return Object.assign(super.getSaveObj(), {repeatFor:parseInt(this._repeatFor)});
     }
 
 
