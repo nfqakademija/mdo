@@ -7,6 +7,7 @@ use App\Repositories\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\SessionFactory;
 
 class AddTimeController extends AbstractController
 {
@@ -20,43 +21,29 @@ class AddTimeController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/time-slot-submit", name="submit-add-slot", methods={"POST"})
+     * @param SessionFactory $sessionFactory
      * @param Request $request
-     * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      */
-    public function create(Request $request)
+    public function create(SessionFactory $sessionFactory, Request $request)
     {
-
         $em = $this->getDoctrine()->getManager();
 
-        $startDate = new \DateTime('Y-m-d');
-        $repeatEndDate = $startDate->modify("+$request->get('repeatFor') week"); //'2018-12-31';repeatFor
-
-        $step  = 1;
-        $unit  = 'W';
-        $repeatStart = new \DateTime($startDate);
-        $repeatEnd   = new \DateTime($repeatEndDate);
-        $interval = new \DateInterval("P{$step}{$unit}");
-        $period   = new \DatePeriod($repeatStart, $interval, $repeatEnd);
-
-
-        foreach ($period as $key => $date) {
+        foreach ($sessionFactory->repeatPerWeeks($request->get('date'), $request->get("repeatFor")) as $key => $date) {
             $session = new Session();
-            $session->setDay($request->get('Day'));
-            $session->setStartsAt(new \DateTime($request->get('From').':00'));
-            $session->setEndsAt(new \DateTime($request->get('To').':00' ));
+            $session->setStartsAt(new \DateTime($request->get('from')));
+            $session->setEndsAt(new \DateTime($request->get('to')));
             $session->setReservedAt(new \DateTime($date->format('Y-m-d')));
-            $session->setType($request->get('Type'));
+            $session->setType($request->get('type'));
             $session->setStatus('free');
             $em->persist($session);
             $em->flush();
         }
 
         return $this->json(array('status' => '200'));
-
     }
 
     /**
@@ -67,21 +54,31 @@ class AddTimeController extends AbstractController
     public function getEdit($id)
     {
         $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+        if (!$session) {
+            throw $this->createNotFoundException(
+                'Irasas nerastas duomenu bazeje'
+            );
+        }
 
         return $this->json(array($session));
     }
-
 
     /**
      * @Route("/time-slot-edit/{id}", name="submit-edit-slot", methods={"POST"})
      * @param $id
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
     public function edit($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+        if (!$session) {
+            throw $this->createNotFoundException(
+                'Irasas nerastas duomenu bazeje'
+            );
+        }
 
         $session->setDay($request->get('Day'));
         $session->setStartsAt(new \DateTime($request->get('From').':00'));
@@ -92,32 +89,27 @@ class AddTimeController extends AbstractController
         $em->persist($session);
         $em->flush();
 
+        return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
     }
-
 
     /**
      * @Route("/time-slot-delete/{id}", name="submit-delete-slot", methods={"POST"})
      * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function delete($id)
     {
         $em = $this->getDoctrine()->getManager();
         $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
+        if (!$session) {
+            throw $this->createNotFoundException(
+                'Irasas nerastas duomenu bazeje'
+            );
+        }
 
         $em->remove($session);
         $em->flush();
-    }
 
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test()
-    {
-        // Nereikalingas metodas
-        $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
-        echo '<pre>';
-        print_r($sessionRepo->checkSlotFree('2018-12-03', '15:00:00', '16:30:00'));
-        die();
+        return $this->json(array('status' => '200', 'message' => 'Istrinta sekmingai'));
     }
 }
