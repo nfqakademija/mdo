@@ -22,7 +22,7 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/time-slot-submit", name="submit-add-slot", methods={"POST"})
+     * @Route("/sessions", name="create-session", methods={"POST"})
      * @param SessionFactory $sessionFactory
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -30,24 +30,17 @@ class AddTimeController extends AbstractController
      */
     public function create(SessionFactory $sessionFactory, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $sessionFactory->createSessions($request);
 
-        foreach ($sessionFactory->repeatPerWeeks($request->get('date'), $request->get("repeatFor")) as $key => $date) {
-            $session = new Session();
-            $session->setStartsAt(new \DateTime($request->get('from')));
-            $session->setEndsAt(new \DateTime($request->get('to')));
-            $session->setReservedAt(new \DateTime($date->format('Y-m-d')));
-            $session->setType($request->get('type'));
-            $session->setStatus('free');
-            $em->persist($session);
-            $em->flush();
+        if(!empty($sessionFactory->validationMessages)){
+            return $this->json($sessionFactory->validationMessages);
+        }else {
+            return $this->json(array('message' => 'Sekmingai prideta'));
         }
-
-        return $this->json(array('status' => '200'));
     }
 
     /**
-     * @Route("/time-slot-edit/{id}", name="submit-edit-slot", methods={"GET"})
+     * @Route("/sessions/{id}", name="get-sessions", methods={"GET"})
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -64,7 +57,7 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/time-slot-edit/{id}", name="submit-edit-slot", methods={"POST"})
+     * @Route("/sessions/{id}", name="edit-sessions", methods={"PUT"})
      * @param $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -93,7 +86,7 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/time-slot-delete/{id}", name="submit-delete-slot", methods={"POST"})
+     * @Route("/sessions/{id}", name="delete-sessions", methods={"DELETE"})
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
