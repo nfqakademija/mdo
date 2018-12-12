@@ -78,6 +78,7 @@ class Time {
 
     addTime() {
         $('.times').append(this.target);
+        this.UpdateTheValues();
         $(this.target).change(()=>{
             this.UpdateTheValues();
         });

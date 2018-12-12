@@ -26,7 +26,6 @@ $(()=>{
     $('#calendar').clickDay((e)=>{
         currentTimes = Time.findTime(sessions,e.date);
         currentTimes.map((time)=>{
-            console.log(time);
             time.addTime();
         });
         currentDate = e.date;
@@ -37,6 +36,8 @@ $(()=>{
         const newTime = new NewTime(currentDate);
         currentTimes.push(newTime);
         newTime.addTime();
+        $(newTime.target).find('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
+        newTime.UpdateTheValues();
     });
 
     $('.Save').click(()=>{
@@ -58,14 +59,8 @@ $(()=>{
         currentTimes = [];
         $('.times').html('');
     });
-    $('.repeatEveryCheckboxForAll').change(()=>{
-        $('.repeatEveryCheckbox').prop('checked',$('.repeatEveryCheckboxForAll').prop('checked'));
-        $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
-        currentTimes.map(time=>time.UpdateTheValues());
-    });
-
     $('.repeatEveryInputForAll').change(()=>{
-       $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
+        $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
         currentTimes.map(time=>time.UpdateTheValues());
     });
 });
