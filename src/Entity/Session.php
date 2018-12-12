@@ -37,6 +37,11 @@ class Session
     private $type;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $hash;
+
+    /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $status;
@@ -148,5 +153,21 @@ class Session
     public function setDiscount($discount): void
     {
         $this->discount = $discount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param mixed $hash
+     */
+    public function setHash($hash): void
+    {
+        $this->hash = $hash;
     }
 }

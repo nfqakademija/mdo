@@ -30,9 +30,13 @@ class AddTimeController extends AbstractController
      */
     public function create(SessionFactory $sessionFactory, Request $request)
     {
-        $sessionFactory->createRepeated($request);
+        $sessionFactory->createSessions($request);
 
-        return $this->json(array('status' => '200'));
+        if(!empty($sessionFactory->validationMessages)){
+            return $this->json($sessionFactory->validationMessages);
+        }else {
+            return $this->json(array('message' => 'Sekmingai prideta'));
+        }
     }
 
     /**
