@@ -10,4 +10,5 @@ require('../../node_modules/@coreui/coreui/dist/js/coreui.min.js');
 require('../../node_modules/chart.js/dist/Chart.min');
 require('../../node_modules/jquery-ui-dist/jquery-ui.min');
 require('../../assets/js/vendors/bootstrap-year-calendar');
-require('../../assets/js/vendors/jquery.dataTables.min');
+require( 'datatables.net' );
+require('datatables.net-bs4');

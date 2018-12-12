@@ -27,6 +27,9 @@
         "build": "encore production"
     },
     "dependencies": {
+        "datatables.net": "^1.10.19",
+        "datatables.net-bs4": "^1.10.19",
+        "datatables.net-dt": "^1.10.19",
         "jquery-modal": "^0.9.1",
         "jquery-ui": "^1.12.1",
         "jquery-ui-dist": "^1.12.1",
