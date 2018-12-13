@@ -8,7 +8,6 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    {{ dump(sessions) }}
     <script>
         let data = {{ sessions|json_encode|raw }};
         console.log(data);

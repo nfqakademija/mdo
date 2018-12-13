@@ -41,14 +41,14 @@ class NewTime extends Time{
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                              <div class="input-group-text">
-                                <span class="" id=""> Repeat for </span>
+                                <span> Repeat for </span>
                             </div>
                         </div>
                         <input type="number" min="1" class="repeatEveryInput form-control" value=""
                                aria-label="Text input with checkbox">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="" id=""> week(s) </span>
+                                <span> week(s) </span>
                             </div>
                         </div>
                     </div>

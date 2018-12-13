@@ -28,4 +28,8 @@ $(()=>{
         }
     });
     $('#table_id').DataTable();
+    $('.CancelButton').click(()=>{
+        alert("are you sure?");
+        //TODO : https://craftpip.github.io/jquery-confirm/
+    });
 });
