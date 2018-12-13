@@ -26,6 +26,7 @@ $(()=>{
     $('#calendar').clickDay((e)=>{
         currentTimes = Time.findTime(sessions,e.date);
         currentTimes.map((time)=>{
+            console.log(time);
             time.addTime();
         });
         currentDate = e.date;
