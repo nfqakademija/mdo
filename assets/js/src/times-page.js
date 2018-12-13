@@ -26,6 +26,7 @@ $(()=>{
     $('#calendar').clickDay((e)=>{
         currentTimes = Time.findTime(sessions,e.date);
         currentTimes.map((time)=>{
+            console.log(time);
             time.addTime();
         });
         currentDate = e.date;
@@ -42,6 +43,7 @@ $(()=>{
 
     $('.Save').click(()=>{
         const editedSessions = currentTimes.filter(session=> session instanceof NewTime || session.enabled);
+
         const readyForSubmitSessions ={items: editedSessions.map(session => session.getSaveObj())};
         const jsonSessions = JSON.stringify(readyForSubmitSessions);
         $.ajax({
@@ -63,6 +65,7 @@ $(()=>{
         $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
         currentTimes.map(time=>time.UpdateTheValues());
     });
+
 });
 
 export {getSessions,setSessions};

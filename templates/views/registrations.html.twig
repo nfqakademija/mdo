@@ -18,27 +18,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                {#{% for registration in registrations %}#}
-                {#<tr>#}
-                {#<td>{{ registration.getCustomer().getId() }}</td>#}
-                {#<td>{{ registration.getCustomer().getFullName() }}</td>#}
-                {#<td>{{ registration.getCustomer().getEmail() }}</td>#}
-                {#<td>{{ registration.getCustomer().getPhone() }}</td>#}
-                {#<td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>#}
-                {#</tr>#}
-                {#{% endfor %}#}
-                <tr>
-                    <td> 0 </td>
-                    <td> Balys Sruoga </td>
-                    <td> balys@sruoga.lt </td>
-                    <td> +37068638924 </td>
-                    <td> Sveiki </td>
-                    <td> 2018-11-28 </td>
-                    <td> 12:00 - 17:00 </td>
-                    <td class="CancelButton">
-                        <button type="button" class="btn-sm btn-danger">CANCEL</button>
-                    </td>
-                </tr>
+                  <tr>
+                      <td> 0 </td>
+                      <td> Balys Sruoga </td>
+                      <td> balys@sruoga.lt </td>
+                      <td> +37068638924 </td>
+                      <td> Sveiki </td>
+                      <td> 2018-11-28 </td>
+                      <td> 12:00 - 17:00 </td>
+                      <td class="CancelButton">
+                          <button type="button" class="btn-sm btn-danger">CANCEL</button>
+                      </td>
+                  </tr>
+                    <tr>
+                      <td> 0 </td>
+                      <td> Balys Sruoga </td>
+                      <td> balys@sruoga.lt </td>
+                      <td> +37068638924 </td>
+                      <td> Sveiki </td>
+                      <td> 2018-11-28 </td>
+                      <td> 12:00 - 17:00 </td>
+                      <td>
+                          <i class="fas fa-ban"></i>
+                      </td>
+                  </tr>
                 </tbody>
             </table>
         </div>
