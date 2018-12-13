@@ -13,7 +13,7 @@ class RegistrationsController extends Controller
 
         return $this->render('views/registrations.html.twig', [
             'page_name' => 'Registrations',
-            'registrations' => $sessionRepo->findRegistrationList()
+            'registrations' => $sessionRepo->findBy(['status' => 'reserved'])
         ]);
     }
 }

@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Controller\Rest;
 
 use App\Entity\Customer;
 use App\Entity\Session;
-use App\Repository\SessionRepository;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,47 +14,44 @@ class ApiController extends FOSRestController
 {
 
     /**
-    * Initialize calendar
-    * @Rest\Get("/calendar")
-    */
-    public function getCalendar()
+     * Initialize calendar
+     * @Rest\Get("/calendar")
+     * @return View
+     */
+    public function getCalendar(): View
     {
-        $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
+        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)->findBy(['status' => 'free']);
 
-        $calendarInitColl = $sessionRepo->init_calendar();
-
-        $calendarInitArray = [];
+        $freeSessionTimes = [];
 
         //transform collection data to proper format array
-        foreach ($calendarInitColl as $value){
-            $calendarInitArray[str_replace('-', "", $value->getReservedAt()->format('Y-m-d'))] = [
+        foreach ($sessionRepo as $value){
+            $freeSessionTimes[$value->getReservedAt()->format('Ymd')] = [
                 'free' => 1
             ];
         }
 
-        return View::create($calendarInitArray, Response::HTTP_OK);
+        return View::create($freeSessionTimes, Response::HTTP_OK);
     }
 
     /**
      * Get free time slot array
-     * @Rest\Get("/date/{date}")
+     * @Rest\Get("/session/{date}")
+     * @param string $date
+     * @return View
      */
-    public function getFreeTimesByDate(string $date)
+    public function getFreeTimesByDate(string $date): View
     {
+        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)->findBy(['status' => 'free', 'reservedAt' => $date]);
 
-        $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
-
-        $freeSlotOfDayColl = $sessionRepo->findFreeTimeSlotByDate($date);
-
-        $freeSlotOfDayArray = [];
+        $freeTimeSlotOfDay = [];
 
         //transform collection data to proper format array
-        foreach ($freeSlotOfDayColl as $value){
-            $freeSlotOfDayArray[str_replace(':', "",$value->getStartsAt()->format('H:i').'-'.$value->getEndsAt()->format('H:i'))] = 1;
+        foreach ($sessionRepo as $value){
+            $freeTimeSlotOfDay[$value->getStartsAt()->format('Hi').'-'.$value->getEndsAt()->format('Hi')] = 1;
         }
 
-        return View::create($freeSlotOfDayArray, Response::HTTP_OK);
-
+        return View::create($freeTimeSlotOfDay, Response::HTTP_OK);
     }
 
     /**
@@ -67,37 +61,48 @@ class ApiController extends FOSRestController
      * @return View
      * @throws \Exception
      */
-    public function postBookingData(Request $request){
+    public function postBookingData(Request $request): View
+    {
 
         //Find slot for booking
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
+        $customerRepo = $this->getDoctrine()->getRepository(Customer::class);
 
         $times = explode("-", $request->get('timeslot'));
 
         $startTime = $this->stringInsert($times[0], ':', 2).':00';
         $endTime   = $this->stringInsert($times[1], ':', 2).':00';
 
-        $customer = New Customer();
-        $customer->setFullName($request->get('guest_name').', '.$request->get('guest_surname'));
-        $customer->setPhone($request->get('guest_phone'));
-        $customer->setEmail($request->get('guest_email'));
-        $customer->setComment($request->get('guest_comment'));
-        $customer->setRegisteredAt(new \DateTime('NOW'));
-
-        //Get free slot id
-        $freeSlotId = $sessionRepo->checkSlotFree($request->get('date'), $startTime, $endTime);
-
-        //Find record by id for updating
-        $session = $sessionRepo->find($freeSlotId[0]['id']);
-
+        $session = $sessionRepo
+            ->findOneBy(
+                [
+                'status' => 'free',
+                'reservedAt' => new \DateTime($request->get('date')),
+                'startsAt' => new \DateTime($startTime),
+                'endsAt' => new \DateTime($endTime)
+                ]
+            );
 
         if (!$session) {
             throw $this->createNotFoundException(
-                 'Pavelavai, laikas rezervuotas'
+                'Pavelavai laikas rezervuotas'
             );
         }
 
         $session->setStatus('reserved');
+
+        if($customer = $customerRepo->findOneBy(['email' => $request->get('guest_email')])){
+            $customer->setComment($request->get('guest_comment'));
+            $customer->setRegisteredAt(new \DateTime('NOW'));
+        }else{
+            $customer = New Customer();
+            $customer->setFullName($request->get('guest_name').', '.$request->get('guest_surname'));
+            $customer->setPhone($request->get('guest_phone'));
+            $customer->setEmail($request->get('guest_email'));
+            $customer->setComment($request->get('guest_comment'));
+            $customer->setRegisteredAt(new \DateTime('NOW'));
+        }
+
         $session->setCustomer($customer);
 
         $em = $this->getDoctrine()->getManager();
@@ -105,20 +110,20 @@ class ApiController extends FOSRestController
         $em->persist($session);
         $em->flush();
 
-
         $message = ['Jusu rezervacija sekminga'];
 
-
         return View::create($message, Response::HTTP_OK);
-
-
     }
 
-    private function stringInsert(string $str, string $insertstr, int $pos) :string
+    /**
+     * @param string $str
+     * @param string $insertStr
+     * @param int $pos
+     * @return string
+     */
+    private function stringInsert(string $str, string $insertStr, int $pos): string
     {
-        $str = substr($str, 0, $pos) . $insertstr . substr($str, $pos);
+        $str = substr($str, 0, $pos) . $insertStr . substr($str, $pos);
         return $str;
     }
-
-
 }
