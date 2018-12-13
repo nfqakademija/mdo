@@ -1,6 +1,14 @@
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 index:
-    path: /
+    path: /admin/dashboard
     controller: App\Controller\RegistrationsController::index
 add-tme:
-    path: /times
+    path: /admin/times
     controller: App\Controller\AddTimeController::index
+fos_user_security_login:
+    path: /
+    controller: App\Controller\SecurityController::loginAction
+login:
+    path: /login
+    controller: App\Controller\SecurityController::loginAction
