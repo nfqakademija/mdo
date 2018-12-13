@@ -31,7 +31,8 @@ class SessionFactory
     public function createSessions(Request $request)
     {
         $hash = uniqid();
-        foreach ($request->request->all() as $requestItems) {
+        $requestData = json_decode($request->getContent(), true);
+        foreach ($requestData as $requestItems) {
             foreach ($requestItems as $requestItem) {
                 if (isset($requestItem['repeatFor'])) {
                     foreach ($this->repeatPerWeeks($requestItem['date'], $requestItem['repeatFor']) as $key => $date) {
