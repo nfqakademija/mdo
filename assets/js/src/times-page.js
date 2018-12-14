@@ -14,7 +14,8 @@ const setSessions = (newsessions)=>{
 };
 $(()=>{
     data.map((session)=>{
-        sessions.push(new OldTime(session.type,session.from,session.to,session.id,new Date(session.reservedAt.Y,session.reservedAt.m,session.reservedAt.d),session.hash,false));
+        const date =session.reservedAt.split('-');
+        sessions.push(new OldTime(session.type,session.startAt,session.endsAt,session.id,new Date(date[0],date[1],date[2]),session.hash,false));
     });
 
     $('#calendar').calendar({

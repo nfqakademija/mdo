@@ -8,10 +8,8 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    {{ dump(sessions) }}
     <script>
         let data = {{ sessions|json_encode|raw }};
-        console.log(data);
     </script>
     <script src="{{ asset("build/js/times.js") }}"> </script>
 {% endblock %}
