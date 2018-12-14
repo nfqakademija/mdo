@@ -131,4 +131,25 @@ class SessionFactory
 
         return $session;
     }
+
+
+    public function formatSessionsArray($sessionsArray): array
+    {
+        $sessions = [];
+        $index = 0;
+
+        foreach ($sessionsArray as $session){
+            $sessions[$index]['id'] = $session->getId();
+            $sessions[$index]['startAt'] = $session->getStartsAt();
+            $sessions[$index]['endsAt'] = $session->getEndsAt();
+            $sessions[$index]['reservedAt'] = $session->getReservedAt();
+            $sessions[$index]['type'] = $session->getType();
+            $sessions[$index]['hash'] = $session->getHash();
+            $sessions[$index]['status'] = $session->getStatus();
+            $index++;
+        }
+
+        return $sessions;
+    }
+
 }
