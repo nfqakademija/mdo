@@ -79,9 +79,9 @@ class Session
         return $this;
     }
 
-    public function getEndsAt(): string
+    public function getEndsAt($format = "H:i"): string
     {
-        return date_format($this->endsAt, "H:i");
+        return date_format($this->endsAt, $format);
     }
 
     public function setEndsAt(\DateTimeInterface $endsAt): self

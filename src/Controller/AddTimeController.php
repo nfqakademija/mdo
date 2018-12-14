@@ -17,7 +17,7 @@ class AddTimeController extends AbstractController
 
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
-            'sessions'=> $sessionRepo->findAll()
+            'sessions'=> $sessionRepo->findAllInMode()
         ]);
     }
 
