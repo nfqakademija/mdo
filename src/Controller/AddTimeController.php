@@ -105,4 +105,27 @@ class AddTimeController extends AbstractController
 
         return $this->json(array('status' => '200', 'message' => 'Istrinta sekmingai'));
     }
+
+    /**
+     * @Route("/sessions/{id}", name="delete-sessionsByHash", methods={"DELETEHASH"})
+     * @param $hash
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteWithHash($hash)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sessions = $this->getDoctrine()->getRepository(Session::class)->findByHash($hash);
+        if (!$sessions) {
+            throw $this->createNotFoundException(
+                'Irasas nerastas duomenu bazeje'
+            );
+        }
+        foreach ($sessions as $session )
+        {
+            $em->remove($session);
+        }
+        $em->flush();
+
+        return $this->json(array('status' => '200', 'message' => 'Istrinta sekmingai'));
+    }
 }
