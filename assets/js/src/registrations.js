@@ -3,7 +3,7 @@ $(()=>{
         return Math.round(Math.random() * 100);
     };
 
-    var lineChart = new Chart($('.RegistrationChart'), {
+    const lineChart = new Chart($('.RegistrationChart'), {
         type: 'line',
         data: {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -28,8 +28,32 @@ $(()=>{
         }
     });
     $('#table_id').DataTable();
-    $('.CancelButton').click(()=>{
-        alert("are you sure?");
-        //TODO : https://craftpip.github.io/jquery-confirm/
+    $('.CancelButton').click((e)=>{
+        const id = parseInt(($(e.currentTarget).parents('tr').attr('id') + "").replace('registration-',''));
+        $.confirm({
+            title: '<i class="fas fa-exclamation-triangle" style="color: #e74d3d;"></i> WARNING!',
+            content: 'Are you sure that you want to cancel this registration?',
+            type: 'red',
+            buttons: {
+                confirm: {
+                    btnClass: 'btn-red',
+                    action : ()=>{
+                        $.ajax({
+                            type: 'POST',
+                            url: "/cancel-registration",
+                            data: {id : id},
+                            success:()=>{
+                                location.reload();
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+                },
+                cancel: {
+                    action : ()=>{}
+                },
+            }
+        });
     });
 });

@@ -12,3 +12,4 @@ require('../../node_modules/jquery-ui-dist/jquery-ui.min');
 require('../../assets/js/vendors/bootstrap-year-calendar');
 require( 'datatables.net' );
 require('datatables.net-bs4');
+require('jquery-confirm');
