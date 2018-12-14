@@ -62,14 +62,13 @@ class Session
         return $this->id;
     }
 
-
     /**
      * @param string $format
      * @return string
      */
-    public function getStartsAt($format = "H:i"): string
+    public function getStartsAt($format = "H:i")
     {
-        return date_format($this->startsAt, $format);
+        return $this->startsAt->format($format);
     }
 
     public function setStartsAt(\DateTimeInterface $startsAt): self
@@ -79,9 +78,13 @@ class Session
         return $this;
     }
 
+    /**
+     * @param string $format
+     * @return string
+     */
     public function getEndsAt($format = "H:i"): string
     {
-        return date_format($this->endsAt, $format);
+        return $this->endsAt->format($format);
     }
 
     public function setEndsAt(\DateTimeInterface $endsAt): self
@@ -97,7 +100,7 @@ class Session
      */
     public function getReservedAt($format = "Y-m-d"): string
     {
-        return date_format($this->reservedAt, $format);
+         return $this->reservedAt->format($format);
     }
 
     public function setReservedAt(\DateTimeInterface $reservedAt): self

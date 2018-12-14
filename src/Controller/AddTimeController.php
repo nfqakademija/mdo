@@ -11,13 +11,13 @@ use App\Service\SessionFactory;
 
 class AddTimeController extends AbstractController
 {
-    public function index()
+    public function index(SessionFactory $sessionFactory)
     {
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
 
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
-            'sessions'=> $sessionRepo->findAllInMode()
+            'sessions'=> $sessionFactory->formatSessionsArray($sessionRepo->findAll())
         ]);
     }
 
