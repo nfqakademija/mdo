@@ -15,7 +15,7 @@ const setSessions = (newsessions)=>{
 $(()=>{
     data.map((session)=>{
         const date =session.reservedAt.split('-');
-        sessions.push(new OldTime(session.type,session.startAt,session.endsAt,session.id,new Date(date[0],date[1],date[2]),session.hash,false));
+        sessions.push(new OldTime(session.type,session.startAt,session.endsAt,session.id,new Date(date[0],parseInt(date[1])-1,date[2]),session.hash,false));
     });
 
     $('#calendar').calendar({
