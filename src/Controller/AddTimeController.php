@@ -107,7 +107,7 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/sessions/{id}", name="delete-sessionsByHash", methods={"DELETEHASH"})
+     * @Route("/sessions/{hash}", name="delete-sessionsByHash", methods={"DELETEHASH"})
      * @param $hash
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
