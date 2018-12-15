@@ -6,6 +6,7 @@ class OldTime extends Time{
         this._asHash = asHash;
         this._applyForAll = false;
         this._enabled = enabled;
+        super.target = this.getForm();
     }
 
     get id() {
@@ -53,8 +54,8 @@ class OldTime extends Time{
                 <div class="bottomButtons">
                     <div class="form-group col-md-12">
                         <div class="custom-control custom-checkbox editTime">
-                            <input type="checkbox" class="custom-control-input" id="editTime">
-                            <label class="custom-control-label" for="editTime">Edit</label>
+                            <input type="checkbox" class="custom-control-input editCheckbox" id="editTime${this.id}">
+                            <label class="custom-control-label" for="editTime${this.id}">Edit</label>
                         </div>
                     </div>
                 </div>
@@ -83,8 +84,8 @@ class OldTime extends Time{
                 
                 <div class="form-group col-md-12 ApplyForAll">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">Apply for all</label>
+                        <input type="checkbox" class="custom-control-input" id="customCheck1${this.id}">
+                        <label class="custom-control-label" for="customCheck1${this.id}">Apply for all</label>
                     </div>
                 </div>
             
@@ -94,7 +95,7 @@ class OldTime extends Time{
 
     addTime() {
         super.addTime();
-        $(super.target.find('#editTime')).change(()=>{
+        $(super.target.find('.editCheckbox')).change(()=>{
             this.enabled = !this.enabled;
             if(this.enabled){ super.target.find('.DisableOverlay').hide();super.target.find('.bottomButtons').css('color','black') }
             if(!this.enabled){ super.target.find('.DisableOverlay').show();super.target.find('.bottomButtons').css('color','white') }
@@ -103,7 +104,7 @@ class OldTime extends Time{
 
     UpdateTheValues() {
         super.UpdateTheValues();
-        this._applyForAll = $('.ApplyForAll').find('input').prop('checked');
+        this._applyForAll = super.target.find('.ApplyForAll').find('input').prop('checked');
     }
 
     getSaveObj() {
@@ -112,13 +113,31 @@ class OldTime extends Time{
     CloseAction(){
         $('#modalWarning').modal('show');
         $('#modalNew').hide();
+        $('.confirmButton').off( "click");
         $('.confirmButton').click(()=>{
-            $.post( "/delete-time", { id:this.id } ).done(()=>{
-                super.CloseAction();
-            });
+            if(this._applyForAll){
+                $.ajax({
+                    type: 'DELETEHASH',
+                    url: `/sessions/${this.asHash}`,
+                    success:()=>{
+                        super.CloseAction();
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/sessions/${this.id}`,
+                    success:()=>{
+                        super.CloseAction();
+                    }
+                });
+            }
         });
         $('#modalWarning').on('hidden.bs.modal', function () {
             $('#modalNew').show();
+
+
         })
     }
 }

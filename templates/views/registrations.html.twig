@@ -11,8 +11,10 @@
                     <th>Full Name</th>
                     <th>Email Adress</th>
                     <th>Mobile Phone</th>
+                    <th>Message</th>
                     <th>Date</th>
-                    <th>Status</th>
+                    <th>Time</th>
+                    <th> </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,25 +25,21 @@
                         <td>{{ registration.getCustomer().getEmail() }}</td>
                         <td>{{ registration.getCustomer().getPhone() }}</td>
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
-                        <td>{{ registration.getStatus() }}</td>
-                        {#<td>{{  registration.getName() }}</td>#}
-                        {#<td>{{  registration.getEmail() }}</td>#}
-                        {#<td>{{  registration.getMnumber() }}</td>#}
-                        {#<td>{{  registration.getDate() }}</td>#}
-                        {#<td>#}
-                            {#{% if  registration.getStatus()=="Successful"%}#}
-                            {#<span class="badge badge-success">{{  registration.getStatus() }}</span>#}
-                            {#{% endif %}#}
-                            {#{% if  registration.getStatus()=="Pending"%}#}
-                                {#<span class="badge badge-warning">{{  registration.getStatus() }}</span>#}
-                            {#{% endif %}#}
-                            {#{% if  registration.getStatus()=="Cancelled"%}#}
-                                {#<span class="badge badge-danger">{{  registration.getStatus() }}</span>#}
-                            {#{% endif %}#}
-                        {#</td>#}
                     </tr>
                 {% endfor %}
                 </tbody>
+                <tr>
+                    <td> 0 </td>
+                    <td> Balys Sruoga </td>
+                    <td> balys@sruoga.lt </td>
+                    <td> +37068638924 </td>
+                    <td> Sveiki </td>
+                    <td> 2018-11-28 </td>
+                    <td> 12:00 - 17:00 </td>
+                    <td>
+                        <i class="fas fa-ban"></i>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="col1"></div>

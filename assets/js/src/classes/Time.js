@@ -6,7 +6,7 @@ class Time {
         this._type = type;
         this._from = from;
         this._to = to;
-        this._target = this.getForm();
+        this._target = null;
     }
     get target() {
         return this._target;
@@ -59,7 +59,7 @@ class Time {
 
     getSaveObj(){
         return {
-            date: this._date.getFullYear() + "-" + this._date.getMonth() + "-" + this._date.getDate(),
+            date: this._date.getFullYear() + "-" + (this._date.getMonth()+1) + "-" + this._date.getDate(),
             type: this._type,
             to: this._to,
             from: this._from
@@ -78,6 +78,7 @@ class Time {
 
     addTime() {
         $('.times').append(this.target);
+        this.UpdateTheValues();
         $(this.target).change(()=>{
             this.UpdateTheValues();
         });
