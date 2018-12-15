@@ -57,31 +57,38 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/sessions/{id}", name="edit-sessions", methods={"PUT"})
-     * @param $id
+     * @Route("/sessions", name="edit-session", methods={"EDITID"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function edit($id, Request $request)
+    public function edit(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $session = $this->getDoctrine()->getRepository(Session::class)->find($id);
-        if (!$session) {
-            throw $this->createNotFoundException(
-                'Irasas nerastas duomenu bazeje'
-            );
+        $sessionsEdited = json_decode($request->getContent(), true);
+        foreach ($sessionsEdited as $sessionEdited) {
+            if (!isset($sessionEdited['id'])) {
+                throw $this->createNotFoundException(
+                    'Irasas neturi id'
+                );
+            }
+
+            $sessionToEdit = $this->getDoctrine()->getRepository(Session::class)->find($sessionEdited['id']);
+
+            if (!$sessionToEdit) {
+                throw $this->createNotFoundException(
+                    'Irasas nerastas duomenu bazeje'
+                );
+            }
+
+            $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
+            $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
+            $sessionToEdit->setType($sessionEdited['type']);
+
+            $em->persist($sessionToEdit);
         }
 
-        $session->setDay($request->get('Day'));
-        $session->setStartsAt(new \DateTime($request->get('From').':00'));
-        $session->setEndsAt(new \DateTime($request->get('To').':00' ));
-        $session->setReservedAt(new \DateTime($date->format('Y-m-d')));
-        $session->setType($request->get('Type'));
-
-        $em->persist($session);
         $em->flush();
-
         return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
     }
 
