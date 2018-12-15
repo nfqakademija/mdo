@@ -43,15 +43,54 @@ $(()=>{
     });
 
     $('.Save').click(()=>{
-        const editedSessions = currentTimes.filter(session=> session instanceof NewTime || session.enabled);
-        const readyForSubmitSessions ={items: editedSessions.map(session => session.getSaveObj())};
-        const jsonSessions = JSON.stringify(readyForSubmitSessions);
+        let alldone = 0;
+        const editedNewSessions = currentTimes.filter(session => session instanceof NewTime);
+        const readyForSubmitNewSessions ={items: editedNewSessions.map(session => session.getSaveObj())};
+        const jsonNewSessions = JSON.stringify(readyForSubmitNewSessions);
         $.ajax({
             type: 'POST',
             url: "/sessions",
-            data: jsonSessions,
+            data: jsonNewSessions,
             success:()=>{
-                location.reload();
+                if(alldone >= 3)
+                    location.reload();
+                alldone++;
+            },
+            dataType: "json",
+            async: false
+        });
+
+        const editedOldSessions = currentTimes.filter(session => session.enabled);
+        const oldSessionsByHash = editedOldSessions.filter(session => session.applyForAll);
+        const oldSessionsById = editedOldSessions.filter(session => !session.applyForAll);
+
+        const readyForSubmitOldSessionsByHash ={items: oldSessionsByHash.map(session => session.getSaveObj())};
+        const readyForSubmitOldSessionsById ={items: oldSessionsById.map(session => session.getSaveObj())};
+
+        const jsonSessionsByHash = JSON.stringify(readyForSubmitOldSessionsByHash);
+        const jsonSessionsById = JSON.stringify(readyForSubmitOldSessionsById);
+
+        $.ajax({
+            type: 'EDITID',
+            url: "/sessions",
+            data: jsonSessionsByHash,
+            success:()=>{
+                if(alldone >= 3)
+                    location.reload();
+                alldone++;
+            },
+            dataType: "json",
+            async: false
+        });
+
+        $.ajax({
+            type: 'EDITHASH',
+            url: "/sessions",
+            data: jsonSessionsById,
+            success:()=>{
+                if(alldone >= 3)
+                    location.reload();
+                alldone++;
             },
             dataType: "json",
             async: false
