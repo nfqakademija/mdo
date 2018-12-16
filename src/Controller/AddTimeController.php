@@ -127,7 +127,6 @@ class AddTimeController extends AbstractController
         $em->flush();
         return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
     }
-
     /**
      * @Route("/sessions/{id}", name="delete-sessions", methods={"DELETE"})
      * @param $id

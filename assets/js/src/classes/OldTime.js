@@ -116,6 +116,7 @@ class OldTime extends Time{
         $('.confirmButton').off( "click");
         $('.confirmButton').click(()=>{
             if(this._applyForAll){
+
                 $.ajax({
                     type: 'DELETEHASH',
                     url: `/sessions/${this.asHash}`,

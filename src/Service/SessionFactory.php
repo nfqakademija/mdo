@@ -131,8 +131,6 @@ class SessionFactory
 
         return $session;
     }
-
-
     public function formatSqlResult( $sqlArr ){
 
         $format = function ($session)
@@ -149,5 +147,4 @@ class SessionFactory
         $formatedArray = array_map($format, $sqlArr);
         return $formatedArray;
     }
-
 }

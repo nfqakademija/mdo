@@ -22,7 +22,7 @@ class SessionRepository extends ServiceEntityRepository
         parent::__construct($registry, Session::class);
         $this->sessionFactory = $sessionFactory;
     }
-
+  
     public function findAllInMode(): array
     {
         return $this->createQueryBuilder('s')
