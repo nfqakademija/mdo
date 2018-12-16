@@ -14,8 +14,8 @@ const setSessions = (newsessions)=>{
 };
 $(()=>{
     data.map((session)=>{
-        const date =session.reservedAt.split('-');
-        sessions.push(new OldTime(session.type,session.startAt,session.endsAt,session.id,new Date(date[0],parseInt(date[1])-1,date[2]),session.hash,false));
+        const date =session.date.split('-');
+        sessions.push(new OldTime(session.type,session.from,session.to,session.id,new Date(date[0],parseInt(date[1])-1,date[2]),session.hash,false));
     });
 
     $('#calendar').calendar({
@@ -43,58 +43,53 @@ $(()=>{
     });
 
     $('.Save').click(()=>{
-        let alldone = 0;
         const editedNewSessions = currentTimes.filter(session => session instanceof NewTime);
         const readyForSubmitNewSessions ={items: editedNewSessions.map(session => session.getSaveObj())};
         const jsonNewSessions = JSON.stringify(readyForSubmitNewSessions);
-        $.ajax({
-            type: 'POST',
-            url: "/sessions",
-            data: jsonNewSessions,
-            success:()=>{
-                if(alldone >= 3)
-                    location.reload();
-                alldone++;
-            },
-            dataType: "json",
-            async: false
-        });
+        if(editedNewSessions.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: "/sessions",
+                data: jsonNewSessions,
+                dataType: "json",
+                async: false
+            });
+        }
 
         const editedOldSessions = currentTimes.filter(session => session.enabled);
         const oldSessionsByHash = editedOldSessions.filter(session => session.applyForAll);
         const oldSessionsById = editedOldSessions.filter(session => !session.applyForAll);
 
-        const readyForSubmitOldSessionsByHash ={items: oldSessionsByHash.map(session => session.getSaveObj())};
-        const readyForSubmitOldSessionsById ={items: oldSessionsById.map(session => session.getSaveObj())};
+        const readyForSubmitOldSessionsByHash =oldSessionsByHash.map(session => session.getSaveObj());
+        const readyForSubmitOldSessionsById =oldSessionsById.map(session => session.getSaveObj());
 
         const jsonSessionsByHash = JSON.stringify(readyForSubmitOldSessionsByHash);
         const jsonSessionsById = JSON.stringify(readyForSubmitOldSessionsById);
+        console.log(jsonSessionsById);
+        if(oldSessionsById.length > 0)
+        {
+            $.ajax({
+                type: 'EDITID',
+                url: "/sessions",
+                data: jsonSessionsById,
+                dataType: "json",
+                async: false
+            });
+        }
 
-        $.ajax({
-            type: 'EDITID',
-            url: "/sessions",
-            data: jsonSessionsByHash,
-            success:()=>{
-                if(alldone >= 3)
-                    location.reload();
-                alldone++;
-            },
-            dataType: "json",
-            async: false
-        });
+        if(oldSessionsByHash.length > 0)
+        {
+            $.ajax({
+                type: 'EDITHASH',
+                url: "/sessions",
+                data: jsonSessionsByHash,
+                dataType: "json",
+                async: false
+            });
+        }
 
-        $.ajax({
-            type: 'EDITHASH',
-            url: "/sessions",
-            data: jsonSessionsById,
-            success:()=>{
-                if(alldone >= 3)
-                    location.reload();
-                alldone++;
-            },
-            dataType: "json",
-            async: false
-        });
+        location.reload();
+
     });
     $('#modalNew').on('hidden.bs.modal',(e) => {
         currentTimes = [];
