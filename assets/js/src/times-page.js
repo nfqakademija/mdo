@@ -37,15 +37,18 @@ $(()=>{
         const newTime = new NewTime(currentDate);
         currentTimes.push(newTime);
         newTime.addTime();
+        $(newTime.target).find('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
+        newTime.UpdateTheValues();
     });
 
     $('.Save').click(()=>{
         const editedSessions = currentTimes.filter(session=> session instanceof NewTime || session.enabled);
-        const readyForSubmitSessions = editedSessions.map(session => session.getSaveObj());
+
+        const readyForSubmitSessions ={items: editedSessions.map(session => session.getSaveObj())};
         const jsonSessions = JSON.stringify(readyForSubmitSessions);
         $.ajax({
             type: 'POST',
-            url: "/time-slot-submit",
+            url: "/sessions",
             data: jsonSessions,
             success:()=>{
                 location.reload();
@@ -58,16 +61,11 @@ $(()=>{
         currentTimes = [];
         $('.times').html('');
     });
-    $('.repeatEveryCheckboxForAll').change(()=>{
-        $('.repeatEveryCheckbox').prop('checked',$('.repeatEveryCheckboxForAll').prop('checked'));
+    $('.repeatEveryInputForAll').change(()=>{
         $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
         currentTimes.map(time=>time.UpdateTheValues());
     });
 
-    $('.repeatEveryInputForAll').change(()=>{
-       $('.repeatEveryInput').val($('.repeatEveryInputForAll').val());
-        currentTimes.map(time=>time.UpdateTheValues());
-    });
 });
 
 export {getSessions,setSessions};

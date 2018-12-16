@@ -1,6 +1,4 @@
 import {Time} from './Time.js';
-import {getSessions,setSessions} from "../times-page";
-
 class NewTime extends Time{
     constructor(date,type = "Adults", from = "", to = "",repeatFor = 1) {
         super(type, from, to, date);
@@ -42,16 +40,15 @@ class NewTime extends Time{
                 <div class="form-group col-md-12">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <input class="repeatEveryCheckbox" type="checkbox" aria-label="Checkbox for following text input">
-                                <span class="" id="">&nbsp;&nbsp; repeat for </span>
+                             <div class="input-group-text">
+                                <span> Repeat for </span>
                             </div>
                         </div>
-                        <input type="number" min="1" class="repeatEveryInput form-control" value="1"
+                        <input type="number" min="1" class="repeatEveryInput form-control" value=""
                                aria-label="Text input with checkbox">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="" id=""> week(s) </span>
+                                <span> week(s) </span>
                             </div>
                         </div>
                     </div>
@@ -62,12 +59,14 @@ class NewTime extends Time{
 
     UpdateTheValues() {
         super.UpdateTheValues();
-        const ticked = $(super.target).find('.repeatEveryCheckbox').prop( "checked" );
-        this.repeatFor = (ticked) ? $(super.target).find('.repeatEveryInput').val() : 1;
+        this.repeatFor = $(super.target).find('.repeatEveryInput').val();
     }
 
     getSaveObj() {
-        return Object.assign(super.getSaveObj(), {repeatFor:this._repeatFor});
+        return Object.assign(super.getSaveObj(), {repeatFor:parseInt(this._repeatFor)});
     }
+
+
+
 }
 export {NewTime};
