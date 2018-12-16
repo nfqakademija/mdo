@@ -37,17 +37,16 @@ $(()=>{
             buttons: {
                 confirm: {
                     btnClass: 'btn-red',
-                    action : ()=>{
+                    action : function(){
                         $.ajax({
                             type: 'POST',
-                            url: "/cancel-registration",
-                            data: {id : id},
+                            url: "/cancel-reservation/"+id,
                             success:()=>{
-                                location.reload();
+                                this.close();
                             },
-                            dataType: "json",
                             async: false
                         });
+                        return false;
                     }
                 },
                 cancel: {

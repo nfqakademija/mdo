@@ -19,8 +19,8 @@
                 </thead>
                 <tbody>
                 {% for registration in registrations %}
-                    <tr>
-                        <td>{{ registration.getCustomer().getId() }}</td>
+                    <tr id="registration-{{ registration.getId() }}">
+                        <td>{{ loop.index }}</td>
                         <td>{{ registration.getCustomer().getFullName() }}</td>
                         <td>{{ registration.getCustomer().getEmail() }}</td>
                         <td>{{ registration.getCustomer().getPhone() }}</td>
