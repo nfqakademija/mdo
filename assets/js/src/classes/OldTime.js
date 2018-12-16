@@ -9,6 +9,15 @@ class OldTime extends Time{
         super.target = this.getForm();
     }
 
+
+    get applyForAll() {
+        return this._applyForAll;
+    }
+
+    set applyForAll(value) {
+        this._applyForAll = value;
+    }
+
     get id() {
         return this._id;
     }
