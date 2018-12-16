@@ -24,16 +24,15 @@
                         <td>{{ registration.getCustomer().getFullName() }}</td>
                         <td>{{ registration.getCustomer().getEmail() }}</td>
                         <td>{{ registration.getCustomer().getPhone() }}</td>
-                        <td> Sveiki </td>
+                        <td> {{ registration.getComment() }} </td>
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
-                        <td> 12:00 - 17:00 </td>
+                        <td> {{ registration.getFrom() }} - {{ registration.getTo() }}</td>
                         <td>
                             <i class="fas fa-ban"></i>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
         </div>
         <div class="col1"></div>
