@@ -133,23 +133,21 @@ class SessionFactory
     }
 
 
-    public function formatSessionsArray($sessionsArray): array
-    {
-        $sessions = [];
-        $index = 0;
+    public function formatSqlResult( $sqlArr ){
 
-        foreach ($sessionsArray as $session){
-            $sessions[$index]['id'] = $session->getId();
-            $sessions[$index]['startAt'] = $session->getStartsAt();
-            $sessions[$index]['endsAt'] = $session->getEndsAt();
-            $sessions[$index]['reservedAt'] = $session->getReservedAt();
-            $sessions[$index]['type'] = $session->getType();
-            $sessions[$index]['hash'] = $session->getHash();
-            $sessions[$index]['status'] = $session->getStatus();
-            $index++;
-        }
-
-        return $sessions;
+        $format = function ($session)
+        {
+            return array(
+                "from" => (new \DateTime($session['starts_at']))->format('H:i'),
+                "to" => (new \DateTime($session['ends_at']))->format('H:i'),
+                "type" => $session['type'],
+                "id" => $session['id'],
+                "date" => (new \DateTime($session['reserved_at']))->format('Y-m-d'),
+                "hash" => $session['hash']
+            );
+        };
+        $formatedArray = array_map($format, $sqlArr);
+        return $formatedArray;
     }
 
 }

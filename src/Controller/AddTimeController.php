@@ -14,10 +14,10 @@ class AddTimeController extends AbstractController
     public function index(SessionFactory $sessionFactory)
     {
         $sessionRepo = $this->getDoctrine()->getRepository(Session::class);
-
+        $year = (new \DateTime())->format('Y');
         return $this->render('views/add-time.html.twig', [
             'page_name' => 'Add-Time',
-            'sessions'=> $sessionFactory->formatSessionsArray($sessionRepo->findAll())
+            'sessions'=> $sessionRepo->findAllByYear($year)
         ]);
     }
 
@@ -57,12 +57,12 @@ class AddTimeController extends AbstractController
     }
 
     /**
-     * @Route("/sessions", name="edit-session", methods={"EDITID"})
+     * @Route("/sessions", name="edit-session-id", methods={"EDITID"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function edit(Request $request)
+    public function editById(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $sessionsEdited = json_decode($request->getContent(), true);
@@ -84,8 +84,44 @@ class AddTimeController extends AbstractController
             $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
             $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
             $sessionToEdit->setType($sessionEdited['type']);
+            $sessionToEdit->setHash(uniqid());
 
             $em->persist($sessionToEdit);
+        }
+
+        $em->flush();
+        return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
+    }
+    /**
+     * @Route("/sessions", name="edit-session-hash", methods={"EDITHASH"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
+     */
+    public function editByHash(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sessionsEdited = json_decode($request->getContent(), true);
+        foreach ($sessionsEdited as $sessionEdited) {
+            if (!isset($sessionEdited['hash'])) {
+                throw $this->createNotFoundException(
+                    'Irasas neturi hash'
+                );
+            }
+
+            $sessionsToEdit = $this->getDoctrine()->getRepository(Session::class)->findByHash($sessionEdited['hash']);
+
+            if (!$sessionsToEdit) {
+                throw $this->createNotFoundException(
+                    'Irasas nerastas duomenu bazeje'
+                );
+            }
+            foreach ($sessionsToEdit as $sessionToEdit) {
+                $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
+                $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
+                $sessionToEdit->setType($sessionEdited['type']);
+                $em->persist($sessionToEdit);
+            }
         }
 
         $em->flush();
