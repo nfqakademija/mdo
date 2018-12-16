@@ -59,7 +59,7 @@ class Time {
 
     getSaveObj(){
         return {
-            date: this._date.getFullYear() + "-" + this._date.getMonth() + "-" + this._date.getDate(),
+            date: this._date.getFullYear() + "-" + (this._date.getMonth()+1) + "-" + this._date.getDate(),
             type: this._type,
             to: this._to,
             from: this._from

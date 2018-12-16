@@ -14,11 +14,21 @@
                     <th>Message</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th></th>
+                    <th> </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr id="registration-0">
+                {% for registration in registrations %}
+                    <tr>
+                        <td>{{ registration.getCustomer().getId() }}</td>
+                        <td>{{ registration.getCustomer().getFullName() }}</td>
+                        <td>{{ registration.getCustomer().getEmail() }}</td>
+                        <td>{{ registration.getCustomer().getPhone() }}</td>
+                        <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tr>
                     <td> 0 </td>
                     <td> Balys Sruoga </td>
                     <td> balys@sruoga.lt </td>
@@ -26,35 +36,10 @@
                     <td> Sveiki </td>
                     <td> 2018-11-28 </td>
                     <td> 12:00 - 17:00 </td>
-                    <td class="CancelButton">
-                        <button type="button" class="btn-sm btn-danger">CANCEL</button>
+                    <td>
+                        <i class="fas fa-ban"></i>
                     </td>
                 </tr>
-                <tr id="registration-1">
-                    <td> 1 </td>
-                    <td> Balys Sruoga </td>
-                    <td> balys@sruoga.lt </td>
-                    <td> +37068638924 </td>
-                    <td> Sveiki </td>
-                    <td> 2018-11-28 </td>
-                    <td> 12:00 - 17:00 </td>
-                    <td class="CancelButton">
-                        <button type="button" class="btn-sm btn-danger">CANCEL</button>
-                    </td>
-                </tr>
-                <tr id="registration-2">
-                    <td> 2 </td>
-                    <td> Balys Sruoga </td>
-                    <td> balys@sruoga.lt </td>
-                    <td> +37068638924 </td>
-                    <td> Sveiki </td>
-                    <td> 2018-11-28 </td>
-                    <td> 12:00 - 17:00 </td>
-                    <td class="CancelButton">
-                        <button type="button" class="btn-sm btn-danger">CANCEL</button>
-                    </td>
-                </tr>
-                </tbody>
             </table>
         </div>
         <div class="col1"></div>

@@ -15,18 +15,21 @@ class ApiController extends FOSRestController
 
     /**
      * Initialize calendar
-     * @Rest\Get("/calendar")
+     * @Rest\Get("/sessions/{Id}")
+     * @param $Id
      * @return View
      */
-    public function getCalendar(): View
+    public function getCalendar($Id): View
     {
-        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)->findBy(['status' => 'free']);
+
+        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)
+            ->findBy(['status' => 'free', 'type' => $this->getTypeById($Id)]);
 
         $freeSessionTimes = [];
 
         //transform collection data to proper format array
-        foreach ($sessionRepo as $value){
-            $freeSessionTimes[$value->getReservedAt()->format('Ymd')] = [
+        foreach ($sessionRepo as $value) {
+            $freeSessionTimes[$value->getReservedAt('Ymd')] = [
                 'free' => 1
             ];
         }
@@ -36,19 +39,22 @@ class ApiController extends FOSRestController
 
     /**
      * Get free time slot array
-     * @Rest\Get("/session/{date}")
+     * @Rest\Get("/sessions/{Id}/date/{date}")
+     * @param string $Id
      * @param string $date
      * @return View
+     * @throws \Exception
      */
-    public function getFreeTimesByDate(string $date): View
+    public function getFreeTimesByDate(string $Id, string $date): View
     {
-        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)->findBy(['status' => 'free', 'reservedAt' => $date]);
+        $sessionRepo = $this->getDoctrine()->getRepository(Session::class)
+            ->findBy(['status' => 'free', 'reservedAt' => new \DateTime($date), 'type' => $this->getTypeById($Id)]);
 
         $freeTimeSlotOfDay = [];
 
         //transform collection data to proper format array
         foreach ($sessionRepo as $value){
-            $freeTimeSlotOfDay[$value->getStartsAt()->format('Hi').'-'.$value->getEndsAt()->format('Hi')] = 1;
+            $freeTimeSlotOfDay[$value->getStartsAt('Hi').'-'.$value->getEndsAt('Hi')] = 1;
         }
 
         return View::create($freeTimeSlotOfDay, Response::HTTP_OK);
@@ -56,7 +62,7 @@ class ApiController extends FOSRestController
 
     /**
      * Create an booking
-     * @Rest\Post("/calendar")
+     * @Rest\Post("/sessions")
      * @param Request $request
      * @return View
      * @throws \Exception
@@ -113,6 +119,24 @@ class ApiController extends FOSRestController
         $message = ['Jusu rezervacija sekminga'];
 
         return View::create($message, Response::HTTP_OK);
+    }
+
+    /**
+     * @param $Id
+     * @return string
+     */
+    private function getTypeById($Id){
+        $type = '';
+        switch ($Id) {
+            case 1:
+                $type  = 'Adults';
+                break;
+            case 2:
+                $type = 'Kids';
+                break;
+        }
+
+         return $type;
     }
 
     /**

@@ -116,13 +116,22 @@ class OldTime extends Time{
         $('.confirmButton').off( "click");
         $('.confirmButton').click(()=>{
             if(this._applyForAll){
-                $.post( "/delete-time", { id:this.id, hash:this.asHash } ).done(()=>{
-                    super.CloseAction();
+
+                $.ajax({
+                    type: 'DELETEHASH',
+                    url: `/sessions/${this.asHash}`,
+                    success:()=>{
+                        super.CloseAction();
+                    }
                 });
             }
             else{
-                $.post( "/delete-time", { id:this.id } ).done(()=>{
-                    super.CloseAction();
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/sessions/${this.id}`,
+                    success:()=>{
+                        super.CloseAction();
+                    }
                 });
             }
         });
