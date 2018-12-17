@@ -170,4 +170,15 @@ class AddTimeController extends AbstractController
 
         return $this->json(array('status' => '200', 'message' => 'Istrinta sekmingai'));
     }
+    /**
+     * @Route("/sessions/{year}", name="get-yearSessions", methods={"GETYEAR"})
+     * @param $year
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getYear($year)
+    {
+        $sessions = $this->getDoctrine()->getRepository(Session::class)->findAllByYear($year);
+
+        return $this->json(array('status' => '200', 'sessions' => $sessions));
+    }
 }
