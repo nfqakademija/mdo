@@ -19,15 +19,15 @@
                 </thead>
                 <tbody>
                 {% for registration in registrations %}
-                    <tr>
-                        <td>{{ registration.getCustomer().getId() }}</td>
+                    <tr id="registration-{{ registration.getId() }}">
+                        <td>{{ loop.index }}</td>
                         <td>{{ registration.getCustomer().getFullName() }}</td>
                         <td>{{ registration.getCustomer().getEmail() }}</td>
                         <td>{{ registration.getCustomer().getPhone() }}</td>
-                        <td> {{ registration.getComment() }} </td>
+                        <td> {{ registration.getCustomer().getComment() }} </td>
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
-                        <td> {{ registration.getFrom() }} - {{ registration.getTo() }}</td>
-                        <td>
+                        <td> {{ registration.getStartsAt() }} - {{ registration.getEndsAt() }}</td>
+                        <td class="CancelButton">
                             <i class="fas fa-ban"></i>
                         </td>
                     </tr>
