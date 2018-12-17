@@ -60,7 +60,7 @@ class Discount
 
     public function setCode(string $code): self
     {
-        $this->code = $code;
+        $this->code = $code. substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
 
         return $this;
     }
