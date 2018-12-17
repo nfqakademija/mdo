@@ -1,4 +1,5 @@
 import {Time} from './Time.js';
+import {updateCalendar} from "../times-page";
 class OldTime extends Time{
     constructor(type, from, to, id, date, asHash, enabled) {
         super(type, from, to, date);
@@ -120,34 +121,47 @@ class OldTime extends Time{
         return Object.assign(super.getSaveObj(), {id:this._id,hash:this._asHash,applyForAll:this._applyForAll});
     }
     CloseAction(){
-        $('#modalWarning').modal('show');
-        $('#modalNew').hide();
-        $('.confirmButton').off( "click");
-        $('.confirmButton').click(()=>{
-            if(this._applyForAll){
-                $.ajax({
-                    type: 'DELETEHASH',
-                    url: `/sessions/${this.asHash}`,
-                    success:()=>{
-                        super.CloseAction();
+        const target = super.target;
+        const that = this;
+        $.confirm({
+            title: '<i class="fas fa-exclamation-triangle" style="color: #e74d3d;"></i> WARNING!',
+            content: 'Are you sure that you want to cancel this registration?',
+            type: 'red',
+            buttons: {
+                confirm: {
+                    btnClass: 'btn-red',
+                    action : function(){
+                        if(that._applyForAll){
+                            $.ajax({
+                                type: 'DELETEHASH',
+                                url: `/sessions/${that.asHash}`,
+                                success:()=>{
+                                    target.remove();
+                                    updateCalendar();
+                                    this.close();
+                                }
+                            });
+                        }
+                        else{
+                            $.ajax({
+                                type: 'DELETE',
+                                url: `/sessions/${that.id}`,
+                                success:()=>{
+                                    target.remove();
+                                    updateCalendar();
+                                    this.close();
+                                }
+                            });
+                        }
+                        return false;
+
                     }
-                });
-            }
-            else{
-                $.ajax({
-                    type: 'DELETE',
-                    url: `/sessions/${this.id}`,
-                    success:()=>{
-                        super.CloseAction();
-                    }
-                });
+                },
+                cancel: {
+                    action : ()=>{}
+                },
             }
         });
-        $('#modalWarning').on('hidden.bs.modal', function () {
-            $('#modalNew').show();
-
-
-        })
     }
 }
 export {OldTime};
