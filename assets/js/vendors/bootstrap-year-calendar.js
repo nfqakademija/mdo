@@ -350,11 +350,11 @@
 					let Class={['Adults'] : false,['Kids']:false};
 					if(events.length == 1) {
 						weight = 4;
-						console.log()
+
 					}
 					else{
 						weight = 2;
-                        console.log('double')
+
 					}
 
 					if(weight > 0)
@@ -370,7 +370,7 @@
 							}
 
 							boxShadow += 'inset 0 -' + (parseInt(i) + 1) * weight + 'px 0 0 ' + events[i].color;
-							console.log(events[i].Type);
+
 						}
                         if(Class['Adults'] && Class['Kids'])
                         {
@@ -810,10 +810,13 @@
 		getYear: function() {
 			return this.options.startYear;
 		},
+		onYearChange: new Event('onYearChange')
+		,
 		setYear: function(year) {
 			var parsedYear = parseInt(year);
 			if(!isNaN(parsedYear)) {
 				this.options.startYear = parsedYear;
+				$("#calendar")[0].dispatchEvent(this.onYearChange);
 				this._render();
 			}
 		},

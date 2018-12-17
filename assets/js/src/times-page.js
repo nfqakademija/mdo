@@ -12,10 +12,33 @@ const getSessions = ()=>{
 const setSessions = (newsessions)=>{
     sessions = [...newsessions];
 };
-$(()=>{
-    data.map((session)=>{
+const loadSessions = (sessionData)=>{
+    sessionData.map((session)=>{
         const date =session.date.split('-');
         sessions.push(new OldTime(session.type,session.from,session.to,session.id,new Date(date[0],parseInt(date[1])-1,date[2]),session.hash,false));
+    });
+};
+const loadByYear = (year)=>{
+    sessions = [];
+    $.ajax({
+        type: 'GETYEAR',
+        url: `/sessions/${year}`,
+        success:(dataSessions)=>{
+            loadSessions(dataSessions.sessions);
+        },
+        async : false
+    });
+};
+$(()=>{
+    loadSessions(data);
+    $('#calendar')[0].addEventListener('onYearChange',()=>{
+        loadByYear($("#calendar").data('calendar').getYear());
+        console.log(sessions);
+        $('#calendar').data('calendar').setDataSource(sessions);
+        console.log();
+    }, false);
+    $('.year-title').click(function(e) {
+        console.log(123);
     });
 
     $('#calendar').calendar({
@@ -27,7 +50,6 @@ $(()=>{
     $('#calendar').clickDay((e)=>{
         currentTimes = Time.findTime(sessions,e.date);
         currentTimes.map((time)=>{
-            console.log(time);
             time.addTime();
         });
         currentDate = e.date;
@@ -65,7 +87,6 @@ $(()=>{
 
         const jsonSessionsByHash = JSON.stringify(readyForSubmitOldSessionsByHash);
         const jsonSessionsById = JSON.stringify(readyForSubmitOldSessionsById);
-        console.log(jsonSessionsById);
         if(oldSessionsById.length > 0)
         {
             $.ajax({
@@ -101,4 +122,4 @@ $(()=>{
     });
 });
 
-export {getSessions,setSessions};
+export {getSessions,setSessions,loadSessions};

@@ -71,7 +71,7 @@ class Time {
         this.from = $(this.target).find('.From').val();
         this.to = $(this.target).find('.To').val();
         (this.type === 'Kids') ?$(this.target).removeClass('timeAdults').addClass('timeKids') :$(this.target).removeClass('timeKids').addClass('timeAdults');
-        this.target.find('.closeButton').click(()=>{
+        this.target.find('.closeButton').off('click').click(()=>{
             this.CloseAction();
         });
     }
