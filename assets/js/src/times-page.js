@@ -29,13 +29,14 @@ const loadByYear = (year)=>{
         async : false
     });
 };
+const updateCalendar = ()=>{
+    loadByYear($("#calendar").data('calendar').getYear());
+    $('#calendar').data('calendar').setDataSource(sessions);
+};
 $(()=>{
     loadSessions(data);
     $('#calendar')[0].addEventListener('onYearChange',()=>{
-        loadByYear($("#calendar").data('calendar').getYear());
-        console.log(sessions);
-        $('#calendar').data('calendar').setDataSource(sessions);
-        console.log();
+        updateCalendar();
     }, false);
     $('.year-title').click(function(e) {
         console.log(123);
@@ -122,4 +123,4 @@ $(()=>{
     });
 });
 
-export {getSessions,setSessions,loadSessions};
+export {getSessions,setSessions,updateCalendar};
