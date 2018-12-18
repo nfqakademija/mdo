@@ -1,67 +1,63 @@
-    const createTimePicker = () => {
-    console.log(jQuery.fn.jquery);
-    $('body').on('keydown','*[data-timepicker]',function(e){
-        $('*[data-timepicker]').attr('autocomplete','off');
-        // Input Value var
-        var inputValue = $(this).val();
-
-        // Make sure keypress value is a Number
-        if( (e.keyCode > 47 && e.keyCode < 58) || e.keyCode === 8){
-
-            // Make sure first value is not greater than 2
-            if(inputValue.length === 0){
-                if(e.keyCode > 49){
-                    e.preventDefault();
-                    $(this).val(2);
-                }
-            }
-
-            // Make sure second value is not greater than 4
-            else if(inputValue.length === 1 && e.keyCode !== 8){
-                e.preventDefault();
-                if(inputValue[0] === '2') {
-                    if (e.keyCode > 50) {
-                        $(this).val(inputValue + '3:');
-                    }
-                    else {
-                        $(this).val(inputValue + String.fromCharCode(e.keyCode) + ':');
-                    }
-                }
-                else{
-                    $(this).val(inputValue + String.fromCharCode(e.keyCode) + ':');
-                }
-            }
-
-            else if(inputValue.length === 2 && e.keyCode !== 8){
-                e.preventDefault();
-                if( e.keyCode > 52 ){
-                    $(this).val(inputValue + ':5');
-                }
-                else{
-                    $(this).val(inputValue + ':' + String.fromCharCode(e.keyCode));
-                }
-            }
-
-            // Make sure that third value is not greater than 5
-            else if(inputValue.length === 3 && e.keyCode !== 8){
-                if( e.keyCode > 52 ){
-                    e.preventDefault();
-                    $(this).val( inputValue + '5' );
-                }
-            }
-
-            // Make sure only 5 Characters can be input
-            else if(inputValue.length > 4 && e.keyCode !== 8){
-                e.preventDefault();
-                return false;
-            }
+const createTimePicker = () => {
+    $('body').on('blur','*[data-timepicker]',function(e){
+        console.log('test');
+        const target = e.target;
+        target.type = 'tel';
+        const input = target.value;
+        let values = input.split(':').map(function(v){return v.replace(/\D/g, '')});
+        console.log(values);
+        if(values[0].length === 1)
+        {
+            values[0] = '0' + values[0];
         }
-
-        // Prevent Alpha and Special Character inputs
+        if(values[1] && values[1].length !==0) {
+            if(values[1].length===1) values[1] = values[1] + '0';
+        }
         else{
-            e.preventDefault();
-            return false;
+            values[1] = '00';
+        }
+        if(values[0] === '')
+            target.value = '';
+        else
+            target.value = values[0] + ':' + values[1];
+    });
+    $('body').on('input','*[data-timepicker]',(e)=>{
+        const target = e.target;
+        target.type = 'text';
+        var input = target.value;
+        console.log(e.originalEvent.inputType);
+        if(e.originalEvent.inputType != "insertText")
+        {
+            if(/:$/.test(input)) input = input.substr(0, 2);
+            target.value = input;
+        }
+        else{
+            var values = input.split(':').map(function(v){return v.replace(/\D/g, '')});
+            console.log(values);
+            let output = "";
+            if(values[0]) values[0] = checkValue(values[0], 24);
+            if(values[1]) values[1] = checkValue(values[1].substr(0,2), 59);
+
+            if((values[1] && values[1].length > 0))
+            {
+                output = values[0]+':'+values[1];
+            }
+            else{
+                if(values[0].length<=1)
+                output = values[0];
+                else output = values[0]+':';
+            }
+            target.value = output.substr(0, 5);
         }
     });
+    function checkValue(str, max){
+        if(str.charAt(0) !== '0'){
+            var num = parseInt(str);
+            if(isNaN(num) || num <= 0) num = 1;
+            if(num > max) num = max;
+            str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1 ? '0' + num : num.toString();
+        };
+        return str;
+    };
 };
 export {createTimePicker};

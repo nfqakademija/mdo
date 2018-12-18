@@ -79,7 +79,8 @@ class Time {
     addTime() {
         $('.times').append(this.target);
         this.UpdateTheValues();
-        $(this.target).change(()=>{
+        $(this.target).change((e)=>{
+          $(e.target).parents('.form-group').find('.Errors').html('');
             this.UpdateTheValues();
         });
     }

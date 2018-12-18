@@ -11,3 +11,6 @@
 .CancelButton:hover{
     color: #d60000;
 }
+.Errors{
+    font-weight: bold;
+}

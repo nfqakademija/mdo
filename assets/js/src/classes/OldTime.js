@@ -76,18 +76,21 @@ class OldTime extends Time{
                         <option ${Kids}>Kids</option>
                         <option ${Adults}>Adults</option>
                     </select>
+                     <small class="Errors form-text text-danger"></small>
                 </div>
                 
                 <div class="form-group col-md-12">
                     <label for="timepicker">From</label>
-                    <input type="text" name="timepicker" value=" ${this.from} " placeholder="12:00" class="form-control From"
+                    <input type="text" name="timepicker" value=" ${this.from} " placeholder="" class="form-control From"
                            data-timepicker="" autocomplete="off">
+                    <small class="Errors form-text text-danger"></small>
                 </div>
                 
                 <div class="form-group col-md-12">
                     <label for="timepicker">To</label>
-                    <input type="text" name="timepicker" value=" ${this.to}" placeholder="12:00" class="form-control To"
+                    <input type="text" name="timepicker" value=" ${this.to}" placeholder="" class="form-control To"
                            data-timepicker="" autocomplete="off">
+                     <small class="Errors form-text text-danger"></small>
                 </div>
                 
                 <div class="DisableOverlay"></div>
