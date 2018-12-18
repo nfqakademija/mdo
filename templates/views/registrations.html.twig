@@ -1,9 +1,6 @@
 {% extends "base.html.twig" %}
 {% block view %}
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-            <canvas class="RegistrationChart chartjs-render-monitor" height="100px"></canvas>
+        <div class="TableContainer">
             <table id="table_id" class="table table-striped table-bordered">
                 <thead>
                 <tr>
@@ -25,7 +22,7 @@
                         <td>{{ registration.getCustomer().getFullName() }}</td>
                         <td>{{ registration.getCustomer().getEmail() }}</td>
                         <td>{{ registration.getCustomer().getPhone() }}</td>
-                        <td> {{ registration.getCustomer().getComment() }} </td>
+                        <td><span class = "Comment"> {{ registration.getCustomer().getComment() }} </span></td>
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
                         <td>{{ registration.getReservedAt()|date('Y-m-d') }}</td>
                         <td> {{ registration.getStartsAt() }} - {{ registration.getEndsAt() }}</td>
@@ -37,8 +34,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="col1"></div>
-    </div>
 {% endblock %}
 {% block scripts %}
     <script src="{{ asset('build/js/registrations.js') }}"></script>
