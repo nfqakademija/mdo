@@ -38,9 +38,6 @@ $(()=>{
     $('#calendar')[0].addEventListener('onYearChange',()=>{
         updateCalendar();
     }, false);
-    $('.year-title').click(function(e) {
-        console.log(123);
-    });
 
     $('#calendar').calendar({
          dataSource: sessions,
