@@ -12,7 +12,8 @@
                     <th>Email Adress</th>
                     <th>Mobile Phone</th>
                     <th>Message</th>
-                    <th>Date</th>
+                    <th>Registeration Date</th>
+                    <th>Session Date</th>
                     <th>Time</th>
                     <th> </th>
                 </tr>
@@ -26,6 +27,7 @@
                         <td>{{ registration.getCustomer().getPhone() }}</td>
                         <td> {{ registration.getCustomer().getComment() }} </td>
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
+                        <td>{{ registration.getReservedAt()|date('Y-m-d') }}</td>
                         <td> {{ registration.getStartsAt() }} - {{ registration.getEndsAt() }}</td>
                         <td class="CancelButton">
                             <i class="fas fa-ban"></i>

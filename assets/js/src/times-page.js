@@ -66,16 +66,33 @@ $(()=>{
     });
 
     $('.Save').click(()=>{
+        $('.Errors').html('');
+        let error = false;
         const editedNewSessions = currentTimes.filter(session => session instanceof NewTime);
         const readyForSubmitNewSessions ={items: editedNewSessions.map(session => session.getSaveObj())};
         const jsonNewSessions = JSON.stringify(readyForSubmitNewSessions);
+        const validationError = ( errors, timesArray )=>{
+            if(errors.length > 0 && errors!=="Sekmingai")
+            {
+                error = true;
+                errors.map(( errorData )=>{
+                    timesArray[errorData.timeIndex].target
+                        .find('.'+errorData.errorElement)
+                        .parents('.form-group')
+                        .find('.Errors').append('• '+errorData.errorText+'<br>');
+                });
+            }
+        };
         if(editedNewSessions.length > 0) {
             $.ajax({
                 type: 'POST',
                 url: "/sessions",
                 data: jsonNewSessions,
                 dataType: "json",
-                async: false
+                async: false,
+                success: (data)=>{
+                    validationError(data,editedNewSessions);
+                }
             });
         }
 
@@ -95,7 +112,10 @@ $(()=>{
                 url: "/sessions",
                 data: jsonSessionsById,
                 dataType: "json",
-                async: false
+                async: false,
+                success: (data)=>{
+                    validationError(data,oldSessionsById);
+                }
             });
         }
 
@@ -106,11 +126,14 @@ $(()=>{
                 url: "/sessions",
                 data: jsonSessionsByHash,
                 dataType: "json",
-                async: false
+                async: false,
+                success: (data)=>{
+                    validationError(data,oldSessionsByHash);
+                }
             });
         }
-
-        location.reload();
+        // if(!error)
+        // location.reload();
 
     });
     $('#modalNew').on('hidden.bs.modal',(e) => {

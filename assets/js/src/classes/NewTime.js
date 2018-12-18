@@ -26,16 +26,19 @@ class NewTime extends Time{
                         <option>Kids</option>
                         <option selected>Adults</option>
                     </select>
+                     <small class="Errors form-text text-danger"></small>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="timepicker">From</label>
-                    <input type="text" name="timepicker" placeholder="12:00" class="form-control From" data-timepicker=""
+                    <input type="text" name="timepicker" placeholder="" class="form-control From" data-timepicker=""
                            autocomplete="off">
+                     <small class="Errors form-text text-danger"></small>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="timepicker">To</label>
-                    <input type="text" name="timepicker" placeholder="12:00" class="form-control To" data-timepicker=""
+                    <input type="text" name="timepicker" placeholder="" class="form-control To" data-timepicker=""
                            autocomplete="off">
+                     <small class="Errors form-text text-danger"></small>
                 </div>
                 <div class="form-group col-md-12">
                     <div class="input-group mb-3">
@@ -52,6 +55,7 @@ class NewTime extends Time{
                             </div>
                         </div>
                     </div>
+                    <small class="Errors form-text text-danger"></small>
                 </div>
             </form>
         `);
