@@ -14,3 +14,9 @@
 .Errors{
     font-weight: bold;
 }
+.TableContainer .col-sm-12{
+    overflow-x:auto;
+}
+.Comment{
+    word-break: break-all;
+}
