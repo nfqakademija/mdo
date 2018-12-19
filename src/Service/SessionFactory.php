@@ -114,7 +114,7 @@ class SessionFactory
 
     public function validate( $session, int  $id)
     {
-        if((new \DateTime($session['from'])) > (new \DateTime($session['to']))){
+        if((new \DateTime($session['from'])) >= (new \DateTime($session['to']))){
             array_push($this->validationMessages,array('timeIndex'=>$id,"errorText"=>"Session can't end earlier than it starts!","errorElement"=>"To"));
         }
         if($session['from'] == ''){
