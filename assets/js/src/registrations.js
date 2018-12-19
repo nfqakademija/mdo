@@ -14,7 +14,7 @@ $(()=>{
                             type: 'POST',
                             url: "/cancel-reservation/"+id,
                             success:()=>{
-                                this.close();
+                                location.reload();
                             },
                             async: false
                         });
