@@ -7,6 +7,7 @@ use App\Repositories\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\SessionFactory;
 
 class AddTimeController extends AbstractController
@@ -30,12 +31,14 @@ class AddTimeController extends AbstractController
      */
     public function create(SessionFactory $sessionFactory, Request $request)
     {
+
+        $data = json_decode($request->getContent(), true);;
         $sessionFactory->createSessions($request);
 
         if(!empty($sessionFactory->validationMessages)){
-            return $this->json($sessionFactory->validationMessages);
+            return JsonResponse::create($sessionFactory->validationMessages);
         }else {
-            return $this->json(array('message' => 'Sekmingai prideta'));
+            return JsonResponse::create('Sekmingai');
         }
     }
 
@@ -62,35 +65,33 @@ class AddTimeController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function editById(Request $request)
+    public function editById(Request $request,SessionFactory $sessionFactory)
     {
         $em = $this->getDoctrine()->getManager();
         $sessionsEdited = json_decode($request->getContent(), true);
+        $sessionNumber = 0;
         foreach ($sessionsEdited as $sessionEdited) {
-            if (!isset($sessionEdited['id'])) {
-                throw $this->createNotFoundException(
-                    'Irasas neturi id'
-                );
+            $sessionFactory->validate($sessionEdited,$sessionNumber);
+            if(sizeof($sessionFactory->getValidationMessages()) <= 0) {
+                $sessionToEdit = $this->getDoctrine()->getRepository(Session::class)->find($sessionEdited['id']);
+
+                $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
+                $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
+                $sessionToEdit->setType($sessionEdited['type']);
+                $sessionToEdit->setHash(uniqid());
+
+                $em->persist($sessionToEdit);
             }
-
-            $sessionToEdit = $this->getDoctrine()->getRepository(Session::class)->find($sessionEdited['id']);
-
-            if (!$sessionToEdit) {
-                throw $this->createNotFoundException(
-                    'Irasas nerastas duomenu bazeje'
-                );
-            }
-
-            $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
-            $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
-            $sessionToEdit->setType($sessionEdited['type']);
-            $sessionToEdit->setHash(uniqid());
-
-            $em->persist($sessionToEdit);
+            $sessionNumber++;
+        }
+        if(sizeof($sessionFactory->getValidationMessages()) <= 0){
+            $em->flush();
+            return JsonResponse::create('Sekmingai');
+        }
+        else{
+            return JsonResponse::create($sessionFactory->validationMessages);
         }
 
-        $em->flush();
-        return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
     }
     /**
      * @Route("/sessions", name="edit-session-hash", methods={"EDITHASH"})
@@ -98,34 +99,37 @@ class AddTimeController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function editByHash(Request $request)
+    public function editByHash(Request $request,SessionFactory $sessionFactory)
     {
         $em = $this->getDoctrine()->getManager();
         $sessionsEdited = json_decode($request->getContent(), true);
+        $sessionNumber = 0;
         foreach ($sessionsEdited as $sessionEdited) {
-            if (!isset($sessionEdited['hash'])) {
-                throw $this->createNotFoundException(
-                    'Irasas neturi hash'
-                );
-            }
+            $sessionFactory->validate($sessionEdited,$sessionNumber);
+            if(sizeof($sessionFactory->getValidationMessages()) <= 0) {
+                $sessionsToEdit = $this->getDoctrine()->getRepository(Session::class)->findByHash($sessionEdited['hash']);
 
-            $sessionsToEdit = $this->getDoctrine()->getRepository(Session::class)->findByHash($sessionEdited['hash']);
-
-            if (!$sessionsToEdit) {
-                throw $this->createNotFoundException(
-                    'Irasas nerastas duomenu bazeje'
-                );
+                if (!$sessionsToEdit) {
+                    throw $this->createNotFoundException(
+                        'Irasas nerastas duomenu bazeje'
+                    );
+                }
+                foreach ($sessionsToEdit as $sessionToEdit) {
+                    $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
+                    $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
+                    $sessionToEdit->setType($sessionEdited['type']);
+                    $em->persist($sessionToEdit);
+                }
             }
-            foreach ($sessionsToEdit as $sessionToEdit) {
-                $sessionToEdit->setStartsAt(new \DateTime($sessionEdited['from']));
-                $sessionToEdit->setEndsAt(new \DateTime($sessionEdited['to']));
-                $sessionToEdit->setType($sessionEdited['type']);
-                $em->persist($sessionToEdit);
-            }
+            $sessionNumber++;
         }
-
-        $em->flush();
-        return $this->json(array('status' => '200', 'message' => 'Atnaujinta sekmingai'));
+        if(sizeof($sessionFactory->getValidationMessages()) <= 0){
+            $em->flush();
+            return JsonResponse::create('Sekmingai');
+        }
+        else{
+            return JsonResponse::create($sessionFactory->validationMessages);
+        }
     }
     /**
      * @Route("/sessions/{id}", name="delete-sessions", methods={"DELETE"})
@@ -169,5 +173,16 @@ class AddTimeController extends AbstractController
         $em->flush();
 
         return $this->json(array('status' => '200', 'message' => 'Istrinta sekmingai'));
+    }
+    /**
+     * @Route("/sessions/{year}", name="get-yearSessions", methods={"GETYEAR"})
+     * @param $year
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getYear($year)
+    {
+        $sessions = $this->getDoctrine()->getRepository(Session::class)->findAllByYear($year);
+
+        return $this->json(array('status' => '200', 'sessions' => $sessions));
     }
 }
