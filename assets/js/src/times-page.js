@@ -129,8 +129,8 @@ $(()=>{
                 }
             });
         }
-        // if(!error)
-        // location.reload();
+        if(!error)
+        location.reload();
 
     });
     $('#modalNew').on('hidden.bs.modal',(e) => {
