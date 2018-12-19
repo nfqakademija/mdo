@@ -12,6 +12,7 @@
                     <th>Registeration Date</th>
                     <th>Session Date</th>
                     <th>Time</th>
+                    <th>Type</th>
                     <th> </th>
                 </tr>
                 </thead>
@@ -26,6 +27,7 @@
                         <td>{{ registration.getCustomer().getRegisteredAt|date('Y-m-d') }}</td>
                         <td>{{ registration.getReservedAt()|date('Y-m-d') }}</td>
                         <td> {{ registration.getStartsAt() }} - {{ registration.getEndsAt() }}</td>
+                        <td> {{ registration.getType() }}</td>
                         <td class="CancelButton">
                             <i class="fas fa-ban"></i>
                         </td>
